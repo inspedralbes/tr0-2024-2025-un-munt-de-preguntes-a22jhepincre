@@ -143,6 +143,45 @@ function getRandomQuestions()
     return $response;
 }
 
+function getQuestions(){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT * FROM questions;");
+
+    if ($result === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar questions: ' . mysqli_error($conex)]);
+    }
+
+    $questions = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+
+        $queryAnswers = mysqli_query($conex, "SELECT id, resposta, correcta FROM answers WHERE idQuestion=${row['id']}");
+
+        if ($queryAnswers === false) {
+            return json_encode(['status' => 'error', 'message' => 'Error al seleccionar respuestas: ' . mysqli_error($conex)]);
+        }
+
+        $row['respostes'] = [];
+
+        while ($rowAnswer = mysqli_fetch_assoc($queryAnswers)) {
+            $row['respostes'][] = $rowAnswer;
+        }
+
+        $questions[] = $row;
+    }
+
+    $response = json_encode(['status' => 'success', 'questions' => $questions]);
+
+    closeDB($conex);
+
+    return $response;
+}
+
 //crud questions and answers
 function insertQuestion($pregunta, $imatge, $difficult, $answers)
 {

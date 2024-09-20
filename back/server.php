@@ -85,7 +85,7 @@ function handleGetRequest($route)
     switch ($route) {
         case 'preguntas':
             // http://localhost/PR0/PR0/back/server.php?route=preguntas preguntas sin la correcta
-            $selectQuestions = json_decode(getRandomQuestions(), true);
+            $selectQuestions = json_decode(getQuestions(), true);
             $_SESSION['preguntasFile'] = $selectQuestions['questions'];
 
             $preguntas = $_SESSION['preguntasFile'];

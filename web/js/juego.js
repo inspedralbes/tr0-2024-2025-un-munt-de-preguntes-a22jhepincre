@@ -47,7 +47,7 @@ let cargarQuestion = function (indice) {
             }else{
                 // console.log(respostes)
                 verify();
-                window.location.href = "finish.php";
+                window.location.href = "finish.html";
             }
         })
         .catch(error => console.error('Error:', error));

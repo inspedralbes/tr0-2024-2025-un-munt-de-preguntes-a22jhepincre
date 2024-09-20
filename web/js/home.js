@@ -21,8 +21,8 @@ let initBtnPlay = function () {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                window.location.href = "juego.php";
-                // cargarNewPage('juego.php')
+                window.location.href = "juego.html";
+                // cargarNewPage('juego.html')
             })
             .catch(error => console.error('Error:', error));
     })
