@@ -9,7 +9,7 @@ function init() {
 }
 
 let cargarQuestion = function (indice) {
-    fetch('/DAW2/PR0/PR0/back/server.php?route=pregunta')
+    fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=pregunta')
         .then(response => response.json())
         .then(data => {
             console.log(data)
@@ -54,7 +54,7 @@ let cargarQuestion = function (indice) {
 }
 
 let initPregunta = function(){
-    fetch('/DAW2/PR0/PR0/back/server.php?route=initPregunta')
+    fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=initPregunta')
     .then(response => response.json())
     .then(data => {
         containerQuestion.textContent = data.pregunta;
@@ -91,7 +91,7 @@ let initPregunta = function(){
 }
 
 let verify = function () {
-    fetch('/DAW2/PR0/PR0/back/server.php?route=verifyAnswer', {
+    fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=verifyAnswer', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ let pushResposta = function (resposta){
     respostes.push(resposta);
 }
 
-document.addEventListener("SPAContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     init();
 
     initPregunta();

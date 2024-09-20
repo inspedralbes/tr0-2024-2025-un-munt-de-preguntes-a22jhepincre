@@ -9,7 +9,7 @@ function init() {
 
 let initBtnPlay = function () {
     btnPlay.addEventListener('click', function () {
-        fetch('/DAW2/PR0/PR0/back/server.php?route=addUser', {
+        fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=addUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

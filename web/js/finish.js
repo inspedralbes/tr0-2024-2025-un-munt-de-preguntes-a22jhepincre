@@ -8,7 +8,7 @@ function init(){
 }
 
 let getResults = function(){
-    fetch('/DAW2/PR0/PR0/back/server.php?route=results')
+    fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=results')
     .then(response => response.json())
     .then(data => {
         console.log(data)
