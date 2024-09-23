@@ -64,7 +64,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-start">
-                    <form>
+                    <form action="http://localhost/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=addQuestion" method="POST">
                         <div class="mb-2 d-flex justify-content-between">
                             <div class="w-50 me-2">
                                 <label for="pregunta" class="form-label">Pregunta</label>
@@ -113,12 +113,50 @@
                         <div class="mb-2">
                             <div class="row">
                                 <div class="col-lg-12 col-12">
-                                    <div>
-                                        <div class="card">
-                                            <div class="card-body">
-
+                                    <label for="respostes" class="form-label">Respostes</label>
+                                    <div id="containeRespostes" class="d-grid gap-2">
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
+                                                name="resposta" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text"/>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
+                                                name="resposta" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
+                                                name="resposta" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
+                                                name="resposta" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button class="btn btn-sm btn-primary" id="btnAddAnswer">Añadir respuesta</button>
                                     </div>
                                 </div>
                             </div>

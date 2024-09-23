@@ -205,6 +205,18 @@ function handlePostRequest($route)
             $_SESSION['idUser'] = $result['idUser'];
             echo json_encode($result);
             break;
+            // /back/server.php?route=addQuestion necesita data
+        case 'addQuestion':
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (is_null($data)) {
+                http_response_code(400); // Bad Request
+                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+                return;
+            }
+            echo json_encode($data);
+
+            insertQuestion($data['pregunta'], $data['imatgeURL'], $data['dificultat'], $data['answers']);
+            break;
         default:
             // Ruta no encontrada para POST
             http_response_code(404);
