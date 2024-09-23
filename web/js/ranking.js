@@ -25,7 +25,7 @@ function getRanking(){
     })
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.querySelector('#app').addEventListener("rankingLoaded", function () {
     init();
 
     getRanking();

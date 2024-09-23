@@ -1,150 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    .center-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <style>
-        .center-screen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
+    body {
+        background-color: #71CBF0;
+    }
+</style>
 
-        body {
-            background-color: #71CBF0;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="center-screen w-100 text-center">
-        <div class="w-75">
-            <div class="text-start py-4">
-                <p class="fs-1 fw-bold text-white">Preguntas</p>
-            </div>
-
-            <div class="card w-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="input-group mb-3 w-25">
-                            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                                </svg>
-                            </span>
-                            <span>Pregunta</span>
-                        </button>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Pregunta</th>
-                                    <th scope="col">Imatge</th>
-                                    <th scope="col">Respostes</th>
-                                    <th scope="col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableQuestionBody">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+<div class="center-screen w-100 text-center">
+    <div class="w-75">
+        <div class="text-start py-4">
+            <p class="fs-1 fw-bold text-white">Preguntas</p>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir pregunta</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="input-group mb-3 w-25">
+                        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar"
+                            aria-describedby="basic-addon1">
                     </div>
-                    <div class="modal-body text-start">
-                        <form>
-                            <div class="mb-2 d-flex justify-content-between">
-                                <div class="w-50 me-2">
-                                    <label for="pregunta" class="form-label">Pregunta</label>
-                                    <input type="text" class="form-control" id="pregunta" name="pregunta"
-                                        aria-describedby="preguntaHelp">
-                                    <div id="pregunta" class="form-text">Una pregunta que tenga que ver con marcas.
-                                    </div>
-                                </div>
-                                <div class="w-50">
-                                    <label for="pregunta" class="form-label">Dificultat</label>
-                                    <select class="form-select" name="difficult">
-                                        <option value="easy">Fácil</option>
-                                        <option value="medium">Medio</option>
-                                        <option value="height">Dificil</option>
-                                    </select>
-                                    <div id="difficult" class="form-text">Escoge que dificultat tiene la pregunta
-                                    </div>
-                                </div>
-                            </div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                            </svg>
+                        </span>
+                        <span>Pregunta</span>
+                    </button>
+                </div>
 
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-lg-7 col-12 d-flex align-items-end">
-                                        <div class="w-100">
-                                            <label for="imatge" class="form-label">Imatge URL</label>
-                                            <input type="text" class="form-control" id="imatge" name="imgURL"
-                                                aria-describedby="imatgeHelp">
-                                            <div id="imatge" class="form-text">Una imatge para dar una pista de la
-                                                correcta.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5 col-12">
-                                        <div class="" style="border:1px solid; color:rgb(33 37 41 / 75%);height: 150px;width: 100%; overflow: hidden;" id="containerImg">
-                                            <div id="exImatge" class="form-text m-0 d-flex justify-content-center align-items-center h-100">Aqui se vera la imagen que pongas.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Pregunta</th>
+                                <th scope="col">Imatge</th>
+                                <th scope="col">Respostes</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableQuestionBody">
 
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-lg-12 col-12">
-                                        <div>
-                                            <div class="card">
-                                                <div class="card-body">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Añadir pregunta</button>
-                        </form>
-                    </div>
-                    <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div> -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir pregunta</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <form>
+                        <div class="mb-2 d-flex justify-content-between">
+                            <div class="w-50 me-2">
+                                <label for="pregunta" class="form-label">Pregunta</label>
+                                <input type="text" class="form-control" id="pregunta" name="pregunta"
+                                    aria-describedby="preguntaHelp">
+                                <div id="pregunta" class="form-text">Una pregunta que tenga que ver con marcas.
+                                </div>
+                            </div>
+                            <div class="w-50">
+                                <label for="pregunta" class="form-label">Dificultat</label>
+                                <select class="form-select" name="difficult">
+                                    <option value="easy">Fácil</option>
+                                    <option value="medium">Medio</option>
+                                    <option value="height">Dificil</option>
+                                </select>
+                                <div id="difficult" class="form-text">Escoge que dificultat tiene la pregunta
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="mb-2">
+                            <div class="row">
+                                <div class="col-lg-7 col-12 d-flex align-items-end">
+                                    <div class="w-100">
+                                        <label for="imatge" class="form-label">Imatge URL</label>
+                                        <input type="text" class="form-control" id="imatge" name="imgURL"
+                                            aria-describedby="imatgeHelp">
+                                        <div id="imatge" class="form-text">Una imatge para dar una pista de la
+                                            correcta.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-12">
+                                    <div class=""
+                                        style="border:1px solid; color:rgb(33 37 41 / 75%);height: 150px;width: 100%; overflow: hidden;"
+                                        id="containerImg">
+                                        <div id="exImatge"
+                                            class="form-text m-0 d-flex justify-content-center align-items-center h-100">
+                                            Aqui se vera la imagen que pongas.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../js/questions.js"></script>
-</body>
+                        <div class="mb-2">
+                            <div class="row">
+                                <div class="col-lg-12 col-12">
+                                    <div>
+                                        <div class="card">
+                                            <div class="card-body">
 
-</html>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Añadir pregunta</button>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> -->
+            </div>
+        </div>
+    </div>
+</div>

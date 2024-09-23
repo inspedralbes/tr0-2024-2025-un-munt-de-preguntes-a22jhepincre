@@ -52,7 +52,7 @@ let cargarImg = function(){
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.querySelector('#app').addEventListener("questionsLoaded", function () {
     init();
     initTable();
     cargarImg();

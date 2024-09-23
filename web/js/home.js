@@ -1,10 +1,15 @@
+import * as allFunctions from '../helpers/all.js'; // Importar todas las funciones
+
 let btnPlay;
 let nameInput;
-
+let btnAdminQuestions;
+let btnRanking;
 
 function init() {
     btnPlay = document.querySelector('#btnPlay');
-    nameInput = document.querySelector('#name')
+    nameInput = document.querySelector('#name');
+    btnAdminQuestions = document.querySelector('#btnAdminQuestions');
+    btnRanking = document.querySelector('#btnRanking');
 }
 
 let initBtnPlay = function () {
@@ -20,42 +25,32 @@ let initBtnPlay = function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-                window.location.href = "juego.html";
+                console.log(data);
+                allFunctions.cargarPage(document.querySelector('#app'), '../pages/juego.html', '../js/juego.js', 'juegoLoaded');
+
+                // window.location.href = "juego.html";
                 // cargarNewPage('juego.html')
             })
             .catch(error => console.error('Error:', error));
     })
 }
 
-// Función para cargar un script de forma dinámica
-function loadScript(url) {
-    const script = document.createElement('script');
-    script.src = url;
-    script.onload = function () {
-        console.log('Script loaded successfully');
-        // Despacha el evento después de que el script haya sido completamente cargado
-        let event = new Event("SPAContentLoaded", { bubbles: true });
-        dispatchEvent(event);
-    };
-    document.body.appendChild(script);
+let initBtnAdminQuestions = function(){
+    btnAdminQuestions.addEventListener('click', function(){
+        allFunctions.cargarPage(document.querySelector('#app'), '../pages/questions.html', '../js/questions.js', 'questionsLoaded');
+    });
 }
 
-// Sobreescribir el contenido de la página y cargar el script
-function cargarNewPage(newHtml) {
-    fetch(newHtml)
-        .then(response => response.text()) // Obtener el contenido de juego.php como texto
-        .then(html => {
-            // Sobreescribir el contenido principal
-            document.querySelector('#content').innerHTML = html;
-
-            // Cargar el script del juego.js después de insertar el HTML
-            loadScript('../js/juego.js'); // Asegúrate de que la ruta a juego.js sea correcta
-        })
-        .catch(error => console.error('Error al cargar el juego:', error));
+let initBtnRanking = function(){
+    btnRanking.addEventListener('click', function(){
+        allFunctions.cargarPage(document.querySelector('#app'), '../pages/ranking.html', '../js/ranking.js', 'rankingLoaded');
+    });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.querySelector('#app').addEventListener('homeLoaded', function(event) {
+    console.log("home")
     init();
     initBtnPlay();
+    initBtnAdminQuestions();
+    initBtnRanking();
 });

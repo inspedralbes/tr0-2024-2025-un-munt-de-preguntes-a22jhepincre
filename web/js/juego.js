@@ -1,11 +1,14 @@
+import * as allFunctions from '../helpers/all.js'; // Importar todas las funciones
+
 let containerQuestion;
 let containerAnswers;
-let indice = 0;
-let respostes = [];
-
+let indice;
+let respostes;
 function init() {
     containerQuestion = document.querySelector('#containerQuestion');
     containerAnswers = document.querySelector('#containerAnswers');
+    indice = 0;
+    respostes = [];
 }
 
 let cargarQuestion = function (indice) {
@@ -47,7 +50,8 @@ let cargarQuestion = function (indice) {
             }else{
                 // console.log(respostes)
                 verify();
-                window.location.href = "finish.html";
+                // window.location.href = "finish.html";
+                allFunctions.cargarPage(document.querySelector('#app'), '../pages/finish.html', '../js/finish.js', 'finishLoaded');
             }
         })
         .catch(error => console.error('Error:', error));
@@ -109,8 +113,7 @@ let pushResposta = function (resposta){
     respostes.push(resposta);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.querySelector('#app').addEventListener("juegoLoaded", function () {
     init();
-
     initPregunta();
 });
