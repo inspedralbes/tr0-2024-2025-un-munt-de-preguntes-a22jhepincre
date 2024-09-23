@@ -48,7 +48,7 @@ let initTable = function(){
 let cargarImg = function(){
     imatge.addEventListener('change', function(){
         let url = imatge.value;
-        containerImg.innerHTML = `<img src="${url}" class="img-fluid" alt="ERROR"/>`
+        containerImg.innerHTML = `<img src="${url}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="ERROR"/>`
     });
 }
 
