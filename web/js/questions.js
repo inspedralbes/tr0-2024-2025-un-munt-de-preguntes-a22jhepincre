@@ -1,3 +1,6 @@
+import * as allFunctions from '../helpers/all.js'; // Importar todas las funciones
+
+
 const pencilIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
   <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -9,21 +12,30 @@ const garbageIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="
 let tableQuestionBody;
 let imatge;
 let containerImg;
+let btnAddQuestion;
+let btnDeleteQuestion;
+let btnHome;
+let btnOpenModalUpdateQuestion;
+let exampleModal;
 
-function init(){
+function init() {
     tableQuestionBody = document.querySelector('#tableQuestionBody');
-    imatge = document.querySelector('#imatge');
+    imatge = document.querySelector('#imatgeURL');
     containerImg = document.querySelector('#containerImg');
+    btnAddQuestion = document.querySelector('#btnAddQuestion');
+    btnHome = document.querySelector('#btnHome');
+    exampleModal = document.querySelector('#exampleModal');
 }
 
-let initTable = function(){
+let initTable = function () {
 
     fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=preguntas')
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(pregunta => {
-            tableQuestionBody.innerHTML += 
-            `
+        .then(response => response.json())
+        .then(data => {
+            tableQuestionBody.innerHTML = ``;
+            data.forEach(pregunta => {
+                tableQuestionBody.innerHTML +=
+                    `
                 <tr>
                     <td>${pregunta.id}</td>
                     <td>${pregunta.pregunta}</td>
@@ -31,30 +43,159 @@ let initTable = function(){
                     <td>RESPOSTA</td>
                     <td>
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-sm btn-secondary me-1">
+                            <button class="btn btn-sm btn-secondary me-1 btnOpenModalUpdateQuestion"
+                                data-id-question="${pregunta.id}">
                                 ${pencilIcon}
                             </button>
-                            <button class="btn btn-sm btn-danger">
+                            <button class="btn btn-sm btn-danger btnDeleteQuestion"
+                                data-id-question="${pregunta.id}">
                                 ${garbageIcon}
                             </button>
                         </div>
                     </td>
                 </tr>
             `;
+            });
+            initBtnDeleteQuestion();
+            initbtnOpenModalUpdateQuestion();
+
+        })
+}
+
+let cargarImg = function () {
+    imatge.addEventListener('change', function () {
+        let url = imatge.value;
+        containerImg.innerHTML = `<img src="${url}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="ERROR"/>`
+    });
+}
+
+let initBtnAddQuestion = function () {
+    btnAddQuestion.addEventListener('click', function () {
+        let pregunta = document.querySelector('#pregunta');
+        let difficult = document.querySelector('#difficult');
+        let imatge = document.querySelector('#imatgeURL');
+        let respostasInput = document.querySelectorAll('.resposta');
+        let checkRespostaCorrecta = document.querySelectorAll('.checkRespostaCorrecta');
+        let respostas = [];
+        let i = 0;
+        respostasInput.forEach((resposta) => {
+            respostas.push(
+                {
+                    "resposta": resposta.value,
+                    "correcta": checkRespostaCorrecta[i].checked
+                });
+            i++;
+        })
+        // $data['pregunta'], $data['imatgeURL'], $data['dificultat'], $data['answers']
+        fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=addQuestion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "pregunta": pregunta.value,
+                "dificultat": difficult.value,
+                "imatgeURL": imatge.value,
+                "answers": respostas
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                emptyForm();
+            })
+            .catch(error => console.error('Error:', error));
+    })
+}
+
+let initBtnDeleteQuestion = function () {
+    btnDeleteQuestion = document.querySelectorAll('.btnDeleteQuestion');
+    btnDeleteQuestion.forEach((btnDelete) => {
+        btnDelete.addEventListener('click', function () {
+            let idQuestion = this.dataset.idQuestion
+            console.log(idQuestion)
+            fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=deleteQuestion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'idQuestion': idQuestion
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    initTable();
+                })
+                .catch(error => console.error('Error:', error));
         });
     })
 }
 
-let cargarImg = function(){
-    imatge.addEventListener('change', function(){
-        let url = imatge.value;
-        containerImg.innerHTML = `<img src="${url}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="ERROR"/>`
+let initbtnOpenModalUpdateQuestion = function () {
+    // Selecciona el modal usando su ID
+    let modalElement = document.getElementById('exampleModal');
+
+    // Inicializa el modal usando la API de Bootstrap
+    let exampleModal = new bootstrap.Modal(modalElement);
+
+    btnOpenModalUpdateQuestion = document.querySelectorAll('.btnOpenModalUpdateQuestion');
+    btnOpenModalUpdateQuestion.forEach((btnOpenModalUpdate) => {
+        btnOpenModalUpdate.addEventListener('click', function () {
+            let idQuestion = this.dataset.idQuestion;
+            let pregunta = document.querySelector('#pregunta');
+            let difficult = document.querySelector('#difficult');
+            let imatge = document.querySelector('#imatgeURL');
+            let respostasInput = document.querySelectorAll('.resposta');
+            let checkRespostaCorrecta = document.querySelectorAll('.checkRespostaCorrecta');
+            fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=getQuestion&id=' + idQuestion)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    pregunta.value = data.questions.pregunta;
+                    imatge.value = data.questions.imatge;
+
+                    exampleModal.show();
+
+                    respostasInput.forEach((resposta, key) => {
+                        resposta.value = data.questions.respostes[key].resposta;
+                        if (data.questions.respostes[key].correcta == 1) {
+                            checkRespostaCorrecta[key].checked = true;
+                        }
+                    })
+                })
+        });
     });
+}
+
+let initBtnHome = function () {
+    btnHome.addEventListener('click', function () {
+        allFunctions.cargarPage(document.querySelector('#app'), '../pages/home.html', '../js/home.js', 'homeLoaded');
+    })
+}
+
+function emptyForm() {
+    let pregunta = document.querySelector('#pregunta');
+    let difficult = document.querySelector('#difficult');
+    let imatge = document.querySelector('#imatgeURL');
+    let respostasInput = document.querySelectorAll('.resposta');
+    let checkRespostaCorrecta = document.querySelectorAll('.checkRespostaCorrecta');
+
+    pregunta.value = "";
+    difficult.value = "easy";
+    imatge.value = "";
+    respostasInput.forEach((resposta, key)=>{
+        resposta.value = "";
+    })
+
+    checkRespostaCorrecta[0].checked = true;
 }
 
 document.querySelector('#app').addEventListener("questionsLoaded", function () {
     init();
     initTable();
     cargarImg();
-
+    initBtnAddQuestion();
+    initBtnHome();
 });

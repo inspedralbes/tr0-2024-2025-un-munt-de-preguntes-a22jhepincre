@@ -143,7 +143,8 @@ function getRandomQuestions()
     return $response;
 }
 
-function getQuestions(){
+function getQuestions()
+{
     $conex = conectDB();
 
     if (!$conex) {
@@ -201,8 +202,8 @@ function insertQuestion($pregunta, $imatge, $difficult, $answers)
 
     if (mysqli_stmt_execute($stmt)) {
         $questionId = mysqli_insert_id($conex);
-        insertAnswers($questionId, $answers);
-        $response = json_encode(['status' => 'success', 'message' => 'Usuario añadido exitosamente.', 'idQuestion' => $questionId]);
+        $resultAddAnswers = insertAnswers($questionId, $answers);
+        $response = json_encode(['status' => 'success', 'message' => 'Pregunta añadido exitosamente.', 'idQuestion' => $questionId, 'answers' => $resultAddAnswers]);
     } else {
         $response = json_encode(['status' => 'error', 'message' => 'Error al añadir el pregunta: ' . mysqli_error($conex)]);
     }
@@ -221,7 +222,6 @@ function insertQuestion($pregunta, $imatge, $difficult, $answers)
 function insertAnswers($questionId, $answers)
 {
     $conex = conectDB();
-
     if (!$conex) {
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
     }
@@ -233,7 +233,7 @@ function insertAnswers($questionId, $answers)
             return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
         }
 
-        mysqli_stmt_bind_param($stmt, "sss", $questionId, $answer['resposta'], $answer['correcta']);
+        mysqli_stmt_bind_param($stmt, "ssi", $questionId, $answer['resposta'], $answer['correcta']);
 
         if (mysqli_stmt_execute($stmt)) {
             $response = json_encode(['status' => 'success', 'message' => 'Resposta añadido exitosamente.']);
@@ -244,6 +244,106 @@ function insertAnswers($questionId, $answers)
         // Cierra la sentencia y la conexión
         mysqli_stmt_close($stmt);
     }
+
+    closeDB($conex);
+    return $response;
+}
+
+function deleteAnswers($questionId)
+{
+    $conex = conectDB(); // Asume que esta función devuelve una conexión válida.
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.']);
+    }
+
+    // Preparar la consulta DELETE
+    $stmt = mysqli_prepare($conex, "DELETE FROM answers WHERE idQuestion = ?");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    // Vincular el parámetro (suponiendo que el id de la pregunta es un entero)
+    mysqli_stmt_bind_param($stmt, "i", $questionId);
+
+    // Ejecutar la consulta y verificar si tuvo éxito
+    if (mysqli_stmt_execute($stmt)) {
+        $response = json_encode(['status' => 'success', 'message' => 'Respuesta eliminada exitosamente.']);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al eliminar la respuesta: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
+function deleteQuestion($questionId)
+{
+    $conex = conectDB(); // Asume que esta función devuelve una conexión válida.
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.']);
+    }
+
+    // Preparar la consulta DELETE
+    $stmt = mysqli_prepare($conex, "DELETE FROM questions WHERE id = ?");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    // Vincular el parámetro (suponiendo que el id de la pregunta es un entero)
+    mysqli_stmt_bind_param($stmt, "i", $questionId);
+
+    // Ejecutar la consulta y verificar si tuvo éxito
+    if (mysqli_stmt_execute($stmt)) {
+        $response = json_encode(['status' => 'success', 'message' => 'Pregunta eliminada exitosamente.']);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al eliminar la pregunta: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
+function getQuestion($id)
+{
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT * FROM questions WHERE id=$id");
+
+    if ($result === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar questions: ' . mysqli_error($conex)]);
+    }
+
+    $questions = mysqli_fetch_assoc($result);
+
+    $queryAnswers = mysqli_query($conex, "SELECT id, resposta, correcta FROM answers WHERE idQuestion=$id");
+
+    if ($queryAnswers === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar respuestas: ' . mysqli_error($conex)]);
+    }
+
+    $row = [];
+
+    while ($rowAnswer = mysqli_fetch_assoc($queryAnswers)) {
+        $row[] = $rowAnswer;
+    }
+
+    $questions['respostes'] = $row;
+
+    $response = json_encode(['status' => 'success', 'questions' => $questions]);
+
+    closeDB($conex);
 
     return $response;
 }
@@ -267,7 +367,6 @@ function verfiyAnswer($idAnswer, $idQuestion)
 
     $response = json_encode($result);
 
+    closeDB($conex);
     return $response;
 }
-
-?>

@@ -13,6 +13,9 @@
 
 <div class="center-screen w-100 text-center">
     <div class="w-75">
+        <div class="text-start">
+            <button class="btn btn-primary mt-3" id="btnHome">Home</button>
+        </div>
         <div class="text-start py-4">
             <p class="fs-1 fw-bold text-white">Preguntas</p>
         </div>
@@ -64,23 +67,23 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-start">
-                    <form action="http://localhost/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=addQuestion" method="POST">
+                    <form>
                         <div class="mb-2 d-flex justify-content-between">
                             <div class="w-50 me-2">
                                 <label for="pregunta" class="form-label">Pregunta</label>
                                 <input type="text" class="form-control" id="pregunta" name="pregunta"
                                     aria-describedby="preguntaHelp">
-                                <div id="pregunta" class="form-text">Una pregunta que tenga que ver con marcas.
+                                <div class="form-text">Una pregunta que tenga que ver con marcas.
                                 </div>
                             </div>
                             <div class="w-50">
                                 <label for="pregunta" class="form-label">Dificultat</label>
-                                <select class="form-select" name="difficult">
+                                <select class="form-select" name="difficult" id="difficult">
                                     <option value="easy">Fácil</option>
                                     <option value="medium">Medio</option>
                                     <option value="height">Dificil</option>
                                 </select>
-                                <div id="difficult" class="form-text">Escoge que dificultat tiene la pregunta
+                                <div class="form-text">Escoge que dificultat tiene la pregunta
                                 </div>
                             </div>
                         </div>
@@ -90,9 +93,9 @@
                                 <div class="col-lg-7 col-12 d-flex align-items-end">
                                     <div class="w-100">
                                         <label for="imatge" class="form-label">Imatge URL</label>
-                                        <input type="text" class="form-control" id="imatge" name="imgURL"
+                                        <input type="text" class="form-control" id="imatgeURL" name="imgURL"
                                             aria-describedby="imatgeHelp">
-                                        <div id="imatge" class="form-text">Una imatge para dar una pista de la
+                                        <div class="form-text">Una imatge para dar una pista de la
                                             correcta.
                                         </div>
                                     </div>
@@ -116,52 +119,50 @@
                                     <label for="respostes" class="form-label">Respostes</label>
                                     <div id="containeRespostes" class="d-grid gap-2">
                                         <div class="d-flex align-items-center w-100">
-                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
-                                                name="resposta" />
+                                            <input class="form-check-input me-2 checkRespostaCorrecta" name="check-corecta" style="width: 2%;" type="radio" checked/>
                                             <div class="card" style="width: 98%;">
                                                 <div class="card-body p-2">
-                                                    <input name="resposta" type="text"/>
+                                                    <input name="resposta" type="text" class="resposta"/>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center w-100">
-                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
-                                                name="resposta" />
+                                            <input class="form-check-input me-2 checkRespostaCorrecta" name="check-corecta" style="width: 2%;" type="radio"/>
                                             <div class="card" style="width: 98%;">
                                                 <div class="card-body p-2">
-                                                    <input name="resposta" type="text"/>
+                                                    <input name="resposta" type="text" class="resposta"/>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center w-100">
-                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
-                                                name="resposta" />
+                                            <input class="form-check-input me-2 checkRespostaCorrecta" name="check-corecta" style="width: 2%;" type="radio"/>
                                             <div class="card" style="width: 98%;">
                                                 <div class="card-body p-2">
-                                                    <input name="resposta" type="text"/>
+                                                    <input name="resposta" type="text" class="resposta"/>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center w-100">
-                                            <input class="form-check-input me-2" style="width: 2%;" type="radio"
-                                                name="resposta" />
+                                            <input class="form-check-input me-2 checkRespostaCorrecta" name="check-corecta" style="width: 2%;" type="radio"/>
                                             <div class="card" style="width: 98%;">
                                                 <div class="card-body p-2">
-                                                    <input name="resposta" type="text"/>
+                                                    <input name="resposta" type="text" class="resposta"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mt-2">
+                                    <!-- <div class="mt-2">
                                         <button class="btn btn-sm btn-primary" id="btnAddAnswer">Añadir respuesta</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Añadir pregunta</button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="btnAddQuestion">Añadir pregunta</button>
                     </form>
                 </div>
                 <!-- <div class="modal-footer">

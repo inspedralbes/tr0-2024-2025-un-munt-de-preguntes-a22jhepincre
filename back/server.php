@@ -151,6 +151,27 @@ function handleGetRequest($route)
         case 'ranking':
             echo getRanking();
             break;
+        case 'getQuestion':
+            // Verifica si el parámetro 'id' está presente en la URL
+            if (isset($_GET['id'])) {
+                $id = intval($_GET['id']);
+                
+                $question = json_decode(getQuestion($id),true);
+                
+                if ($question) {
+                    header('Content-Type: application/json');
+                    echo json_encode($question);
+                } else {
+                    // Si la pregunta no existe, devuelve un error
+                    http_response_code(404);
+                    echo json_encode(["error" => "Pregunta no encontrada"]);
+                }
+            } else {
+                // Si no se proporciona el 'id', devuelve un error
+                http_response_code(400);
+                echo json_encode(["error" => "ID no proporcionado"]);
+            }
+            break;
         default:
             // Ruta no encontrada
             http_response_code(404);
@@ -213,9 +234,20 @@ function handlePostRequest($route)
                 echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
                 return;
             }
-            echo json_encode($data);
+            $result = json_decode(insertQuestion($data['pregunta'], $data['imatgeURL'], $data['dificultat'], $data['answers']), true);
+            echo json_encode($result);
+            break;
+        case 'deleteQuestion':
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (is_null($data)) {
+                http_response_code(400); // Bad Request
+                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+                return;
+            }
+            $resultDeleteAnswers = json_decode(deleteAnswers($data['idQuestion']), true);
 
-            insertQuestion($data['pregunta'], $data['imatgeURL'], $data['dificultat'], $data['answers']);
+            $result = json_decode(deleteQuestion($data['idQuestion']), true);
+            echo json_encode(["preguntas"=>$result, "respuesotas"=>$resultDeleteAnswers]);
             break;
         default:
             // Ruta no encontrada para POST
