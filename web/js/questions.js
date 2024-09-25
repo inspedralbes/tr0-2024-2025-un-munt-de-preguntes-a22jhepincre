@@ -155,15 +155,15 @@ let initbtnOpenModalUpdateQuestion = function () {
                     console.log(data);
                     pregunta.value = data.questions.pregunta;
                     imatge.value = data.questions.imatge;
-
-                    exampleModal.show();
-
                     respostasInput.forEach((resposta, key) => {
                         resposta.value = data.questions.respostes[key].resposta;
                         if (data.questions.respostes[key].correcta == 1) {
                             checkRespostaCorrecta[key].checked = true;
                         }
                     })
+
+                    exampleModal.show();
+
                 })
         });
     });
