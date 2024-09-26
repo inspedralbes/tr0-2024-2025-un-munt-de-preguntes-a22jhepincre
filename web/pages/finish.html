@@ -13,13 +13,25 @@
 </style>
 
 <div class="center-screen">
-    <p class="fs-1 fw-bold text-white">Acabaste</p>
-    <div class="card">
+    <p class="fw-bold text-white" style="font-size: 10vh;">Resultado</p>
+    <div class="card w-75">
         <div class="card-body">
-            <p class="fs-3 fw-bold m-0" id="result"></p>
-            <p class="fs-3 fw-bold m-0" id="totalPoints"></p>
-            <button class="btn btn-primary" id="btnHome">Home</button>
-            <button class="btn btn-primary" id="btnRetryGame">Retry</button>
+            <!-- <img id="profilePicturePlayer"/> -->
+            <div class="d-flex justify-content-between">    
+                <div style="border:1px solid; border-radius: 100px; width: 4%;">
+
+                </div>
+                <p class="fs-3 fw-bold m-0" id="namePlayer"></p>
+                <p class="fs-3 fw-bold m-0" id="result"></p>
+                <p class="fs-3 fw-bold m-0" id="time"></p>
+                <p class="fs-3 fw-bold m-0" id="totalPoints"></p>
+            </div>
+
         </div>
     </div>
+    <div class="d-flex w-75 mt-lg-4">
+        <button class="btn btn-primary me-2" id="btnHome">Home</button>
+        <button class="btn btn-primary" id="btnRetryGame">Retry</button>
+    </div>
+
 </div>

@@ -6,13 +6,16 @@ let btnHome;
 let btnHomeHandler;
 let btnRetryGame;
 let btnRetryGameHandler;
-
+let time;
+let namePlayer;
 
 function init(){
     result = document.querySelector('#result');
     totalPoints = document.querySelector('#totalPoints');
     btnHome = document.querySelector('#btnHome');
     btnRetryGame = document.querySelector('#btnRetryGame');
+    time = document.querySelector('#time');
+    namePlayer = document.querySelector('#namePlayer');
 }
 
 let getResults = function(){
@@ -23,6 +26,8 @@ let getResults = function(){
 
         result.textContent = data['nAnswersCorrect'] + "/10";
         totalPoints.textContent = data['totalPoints'];
+        time.textContent = (data['diff']*1000)+"ms";
+        namePlayer.textContent = data['user']['name'];
     })
 }
 btnHomeHandler = function(){

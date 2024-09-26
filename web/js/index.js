@@ -4,7 +4,7 @@ let app;
 
 function init() {
     app = document.querySelector('#app');
-    allFunctions.cargarPage(app, '../pages/home.html', '../js/home.js', 'homeLoaded');
+    allFunctions.cargarPage(app, '../pages/finish.html', '../js/finish.js', 'finishLoaded');
 }
 
 

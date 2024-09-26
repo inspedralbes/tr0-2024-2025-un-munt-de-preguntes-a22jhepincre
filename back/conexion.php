@@ -34,7 +34,15 @@ function addUser($name)
 
     if (mysqli_stmt_execute($stmt)) {
         $userId = mysqli_insert_id($conex);
-        $response = json_encode(['status' => 'success', 'message' => 'Usuario añadido exitosamente.', 'idUser' => $userId]);
+
+        $stmt = mysqli_prepare($conex, "SELECT * FROM user WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "i", $userId);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $userData = mysqli_fetch_assoc($result); // Obtienes el objeto completo
+
+        $response = json_encode(['status' => 'success', 'message' => 'Usuario añadido exitosamente.', 'user' => $userData]);
     } else {
         $response = json_encode(['status' => 'error', 'message' => 'Error al añadir el usuario: ' . mysqli_error($conex)]);
     }
@@ -331,7 +339,7 @@ function updateQuestion($question, $answers)
         foreach ($answers as $key => $answer) {
             $resultAnswers[] = updateAnswer($answer);
         }
-        $response = json_encode(['status' => 'success', 'message' => 'Pregunta actualizada exitosamente.', 'answers'=>$resultAnswers]);
+        $response = json_encode(['status' => 'success', 'message' => 'Pregunta actualizada exitosamente.', 'answers' => $resultAnswers]);
     } else {
         $response = json_encode(['status' => 'error', 'message' => 'Error al actualizar la pregunta: ' . mysqli_error($conex)]);
     }

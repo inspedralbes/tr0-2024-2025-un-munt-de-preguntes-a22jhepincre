@@ -137,14 +137,14 @@ function handleGetRequest($route)
             $diff = $endDate - $startDate;
 
             $totalPoints = ($_SESSION['answersSuccess'] * 20) + $diff;
-            setPoints($_SESSION['idUser'], $totalPoints);
+            setPoints($_SESSION['user']['id'], $totalPoints);
             echo json_encode([
                 "nAnswersCorrect" => $_SESSION['answersSuccess'],
                 "startDate" => $_SESSION['start'],
                 "endDate" => $_SESSION['end'],
                 "diff" => $diff,
                 'totalPoints' => $totalPoints,
-                'idUser' => $_SESSION['idUser']
+                'user' => $_SESSION['user']
             ]);
             break;
             // http://localhost/PR0/PR0/back/server.php?route=ranking
@@ -223,7 +223,7 @@ function handlePostRequest($route)
             $name = $data['name'];
 
             $result = json_decode(addUser($name), true);
-            $_SESSION['idUser'] = $result['idUser'];
+            $_SESSION['user'] = $result['user'];
             echo json_encode($result);
             break;
             // /back/server.php?route=addQuestion necesita data
