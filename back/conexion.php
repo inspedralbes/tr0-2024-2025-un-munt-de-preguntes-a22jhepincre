@@ -318,7 +318,6 @@ function updateQuestion($question, $answers)
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.']);
     }
 
-    // Preparar la consulta DELETE
     $stmt = mysqli_prepare($conex, "UPDATE `questions` SET `pregunta`= ?,`imatge`= ? ,`difficult`= ? WHERE id = ?");
 
     if ($stmt === false) {
@@ -329,8 +328,8 @@ function updateQuestion($question, $answers)
 
     if (mysqli_stmt_execute($stmt)) {
         $resultAnswers = [];
-        foreach($answers as $answer){
-            $resultAddAnswers[] = updateAnswer($answer);
+        foreach ($answers as $key => $answer) {
+            $resultAnswers[] = updateAnswer($answer);
         }
         $response = json_encode(['status' => 'success', 'message' => 'Pregunta actualizada exitosamente.', 'answers'=>$resultAnswers]);
     } else {
@@ -344,20 +343,20 @@ function updateQuestion($question, $answers)
     return $response;
 }
 
-function updateAnswer($answers){
+function updateAnswer($answer)
+{
     $conex = conectDB();
     if (!$conex) {
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.']);
     }
 
-    // Preparar la consulta DELETE
     $stmt = mysqli_prepare($conex, "UPDATE `answers` SET `resposta`= ? ,`correcta`= ? WHERE id = ?");
 
     if ($stmt === false) {
         return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
     }
 
-    mysqli_stmt_bind_param($stmt, "ssi", $answers['resposta'], $answers['correcta'], $answers['id']);
+    mysqli_stmt_bind_param($stmt, "sii", $answer['resposta'], $answer['correcta'], $answer['id']);
 
     if (mysqli_stmt_execute($stmt)) {
         $response = json_encode(['status' => 'success', 'message' => 'Respostes actualizada exitosamente.']);

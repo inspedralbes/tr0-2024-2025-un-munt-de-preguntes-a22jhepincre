@@ -120,6 +120,8 @@ let initBtnAddQuestion = function () {
             .then(data => {
                 console.log(data)
                 emptyForm();
+                exampleModal.hide();
+                initTable();
             })
             .catch(error => console.error('Error:', error));
     })
@@ -200,7 +202,41 @@ let initBtnUpdateQuestion = function(){
         let checkRespostaCorrecta = document.querySelectorAll('.checkRespostaCorrecta');
         let idQuestionInput = document.querySelector('#idQuestion');
 
-        
+        let answers = [];
+
+        respostasInput.forEach((resposta, key)=>{
+            let answer = {
+                "id": resposta.dataset.idResposta,
+                "resposta":resposta.value,
+                "correcta":checkRespostaCorrecta[key].checked
+            }
+
+            answers.push(answer);
+        });
+
+        fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=updateQuestion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "question": {
+                    "id":idQuestionInput.value,
+                    "pregunta":pregunta.value,
+                    "imatgeURL": imatge.value,
+                    "dificultat": difficult.value
+                },
+                "answers":answers
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                emptyForm();
+                exampleModal.hide();
+                initTable();
+            })
+            .catch(error => console.error('Error:', error));
     });  
 }
 

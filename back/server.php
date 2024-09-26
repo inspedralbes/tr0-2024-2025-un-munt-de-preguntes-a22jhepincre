@@ -155,9 +155,9 @@ function handleGetRequest($route)
             // Verifica si el parámetro 'id' está presente en la URL
             if (isset($_GET['id'])) {
                 $id = intval($_GET['id']);
-                
-                $question = json_decode(getQuestion($id),true);
-                
+
+                $question = json_decode(getQuestion($id), true);
+
                 if ($question) {
                     header('Content-Type: application/json');
                     echo json_encode($question);
@@ -244,8 +244,10 @@ function handlePostRequest($route)
                 echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
                 return;
             }
-
-            updateQuestion($data['quuestion'], $data['answers']);
+            // echo json_encode($data);
+            $result = json_decode(updateQuestion($data['question'], $data['answers']), true);
+            
+            echo json_encode($result);
             break;
         case 'deleteQuestion':
             $data = json_decode(file_get_contents('php://input'), true);
@@ -257,7 +259,7 @@ function handlePostRequest($route)
             $resultDeleteAnswers = json_decode(deleteAnswers($data['idQuestion']), true);
 
             $result = json_decode(deleteQuestion($data['idQuestion']), true);
-            echo json_encode(["preguntas"=>$result, "respuesotas"=>$resultDeleteAnswers]);
+            echo json_encode(["preguntas" => $result, "respuesotas" => $resultDeleteAnswers]);
             break;
         default:
             // Ruta no encontrada para POST

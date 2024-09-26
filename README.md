@@ -10,7 +10,7 @@ Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre
 El projecte s'ha de poder desplegar en mode desenvolupament simplement fent docker compose up
 
 # Aquest fitxer ha de contenir com a mínim:
- * Nom dels integrants
+ * Nom dels integrants:
  Jheremy Pinto Crespo
  * Nom del projecte
  * Petita descripció
