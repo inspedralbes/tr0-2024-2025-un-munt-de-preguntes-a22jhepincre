@@ -16,7 +16,12 @@ let btnAddQuestion;
 let btnDeleteQuestion;
 let btnHome;
 let btnOpenModalUpdateQuestion;
+let btnOpenAddModalQuestion;
+let labelModal;
+let btnCloseModal;
+let modalElement;
 let exampleModal;
+let btnUpdateQuestion;
 
 function init() {
     tableQuestionBody = document.querySelector('#tableQuestionBody');
@@ -24,7 +29,19 @@ function init() {
     containerImg = document.querySelector('#containerImg');
     btnAddQuestion = document.querySelector('#btnAddQuestion');
     btnHome = document.querySelector('#btnHome');
-    exampleModal = document.querySelector('#exampleModal');
+    btnOpenAddModalQuestion = document.querySelector('#btnOpenAddModalQuestion');
+    labelModal = document.querySelector('#labelModal');
+    btnCloseModal = document.querySelector('#btnCloseModal');
+    modalElement = document.getElementById('exampleModal');
+    exampleModal = new bootstrap.Modal(modalElement);
+    btnUpdateQuestion = document.querySelector('#btnUpdateQuestion');
+}
+
+let initBtnCloseModal = function () {
+    btnCloseModal.addEventListener('click', function () {
+        emptyForm();
+        exampleModal.hide();
+    })
 }
 
 let initTable = function () {
@@ -134,12 +151,6 @@ let initBtnDeleteQuestion = function () {
 }
 
 let initbtnOpenModalUpdateQuestion = function () {
-    // Selecciona el modal usando su ID
-    let modalElement = document.getElementById('exampleModal');
-
-    // Inicializa el modal usando la API de Bootstrap
-    let exampleModal = new bootstrap.Modal(modalElement);
-
     btnOpenModalUpdateQuestion = document.querySelectorAll('.btnOpenModalUpdateQuestion');
     btnOpenModalUpdateQuestion.forEach((btnOpenModalUpdate) => {
         btnOpenModalUpdate.addEventListener('click', function () {
@@ -149,23 +160,63 @@ let initbtnOpenModalUpdateQuestion = function () {
             let imatge = document.querySelector('#imatgeURL');
             let respostasInput = document.querySelectorAll('.resposta');
             let checkRespostaCorrecta = document.querySelectorAll('.checkRespostaCorrecta');
+            let idQuestionInput = document.querySelector('#idQuestion');
+
             fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=getQuestion&id=' + idQuestion)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
+                    idQuestionInput.value = idQuestion;
                     pregunta.value = data.questions.pregunta;
                     imatge.value = data.questions.imatge;
+                    difficult.value = data.questions.difficult;
                     respostasInput.forEach((resposta, key) => {
                         resposta.value = data.questions.respostes[key].resposta;
+                        resposta.dataset.idResposta = data.questions.respostes[key].id;
                         if (data.questions.respostes[key].correcta == 1) {
                             checkRespostaCorrecta[key].checked = true;
                         }
                     })
+                    let btnAddQuestion = document.querySelector('#btnAddQuestion');
+                    let btnUpdateQuestion = document.querySelector('#btnUpdateQuestion');
+
+                    btnAddQuestion.classList.add('d-none');
+                    btnUpdateQuestion.classList.remove('d-none');
+                    labelModal.textContent = "Actualizar pregunta"
 
                     exampleModal.show();
 
                 })
         });
+    });
+}
+
+let initBtnUpdateQuestion = function(){
+    btnUpdateQuestion.addEventListener('click', function(){
+        let pregunta = document.querySelector('#pregunta');
+        let difficult = document.querySelector('#difficult');
+        let imatge = document.querySelector('#imatgeURL');
+        let respostasInput = document.querySelectorAll('.resposta');
+        let checkRespostaCorrecta = document.querySelectorAll('.checkRespostaCorrecta');
+        let idQuestionInput = document.querySelector('#idQuestion');
+
+        
+    });  
+}
+
+let initBtnOpenAddModalQuestion = function () {
+    btnOpenAddModalQuestion.addEventListener('click', function () {
+        emptyForm();
+
+        let btnAddQuestion = document.querySelector('#btnAddQuestion');
+        let btnUpdateQuestion = document.querySelector('#btnUpdateQuestion');
+
+        labelModal.textContent = "Añadir pregunta"
+        btnAddQuestion.classList.remove('d-none');
+        btnUpdateQuestion.classList.add('d-none');
+
+        exampleModal.show();
+
     });
 }
 
@@ -185,7 +236,7 @@ function emptyForm() {
     pregunta.value = "";
     difficult.value = "easy";
     imatge.value = "";
-    respostasInput.forEach((resposta, key)=>{
+    respostasInput.forEach((resposta, key) => {
         resposta.value = "";
     })
 
@@ -197,5 +248,8 @@ document.querySelector('#app').addEventListener("questionsLoaded", function () {
     initTable();
     cargarImg();
     initBtnAddQuestion();
+    initBtnUpdateQuestion();
     initBtnHome();
+    initBtnOpenAddModalQuestion();
+    initBtnCloseModal();
 });

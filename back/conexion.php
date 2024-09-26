@@ -311,6 +311,67 @@ function deleteQuestion($questionId)
     return $response;
 }
 
+function updateQuestion($question, $answers)
+{
+    $conex = conectDB();
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.']);
+    }
+
+    // Preparar la consulta DELETE
+    $stmt = mysqli_prepare($conex, "UPDATE `questions` SET `pregunta`= ?,`imatge`= ? ,`difficult`= ? WHERE id = ?");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    mysqli_stmt_bind_param($stmt, "sssi", $question['pregunta'], $question['imatgeURL'], $question['dificultat'], $question['id']);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $resultAnswers = [];
+        foreach($answers as $answer){
+            $resultAddAnswers[] = updateAnswer($answer);
+        }
+        $response = json_encode(['status' => 'success', 'message' => 'Pregunta actualizada exitosamente.', 'answers'=>$resultAnswers]);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al actualizar la pregunta: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
+function updateAnswer($answers){
+    $conex = conectDB();
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar a la base de datos.']);
+    }
+
+    // Preparar la consulta DELETE
+    $stmt = mysqli_prepare($conex, "UPDATE `answers` SET `resposta`= ? ,`correcta`= ? WHERE id = ?");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssi", $answers['resposta'], $answers['correcta'], $answers['id']);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $response = json_encode(['status' => 'success', 'message' => 'Respostes actualizada exitosamente.']);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al actualizar la resposta: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
 function getQuestion($id)
 {
     $conex = conectDB();

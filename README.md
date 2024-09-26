@@ -11,6 +11,7 @@ El projecte s'ha de poder desplegar en mode desenvolupament simplement fent dock
 
 # Aquest fitxer ha de contenir com a mínim:
  * Nom dels integrants
+ Jheremy Pinto Crespo
  * Nom del projecte
  * Petita descripció
  * Adreça del gestor de tasques (taiga, jira, trello...)
