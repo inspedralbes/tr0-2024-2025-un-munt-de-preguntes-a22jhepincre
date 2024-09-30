@@ -40,6 +40,11 @@ function handleGetRequest($route)
                 echo json_encode(['login' => true, "msg" => "Hay una sesion iniciada."]);
             }
             break;
+            // back/server.php?route=logout
+        case 'logout':
+            session_destroy();
+            echo json_encode(['status'=>"success", 'msg'=>"Se cerro la sesión con exitó"]);
+            break;
         case 'preguntas':
             // http://localhost/PR0/PR0/back/server.php?route=preguntas preguntas sin la correcta
             $selectQuestions = json_decode(getQuestions(), true);
@@ -156,17 +161,18 @@ function handlePostRequest($route)
                 $validatorEmail = json_decode(validatorEmail($data['email']), true);
 
                 // echo json_encode(['name'=>$validatorName, 'email'=>$validatorEmail]);
-                if ($validatorEmail != null || $validatorName != null) {
-                    echo json_encode(['status' => false, 'msg' => "El nombre o el correo ya existen."]);
+                if ($validatorEmail['users'] != null || $validatorName['users'] != null) {
+                    echo json_encode(['status' => false, 'msg' => "El nombre o el correo ya existen.", 'name' => $validatorName, 'email' => $validatorEmail]);
                 } else {
                     $result = json_decode(addUser($data['name'], $data['email'], $data['password']), true);
                     // Devolver la respuesta en formato JSON
-                    $_SESSION['user'] = $result['user'];
+                    $_SESSION['user'] = $result['users'];
                     header('Content-Type: application/json');
                     echo json_encode($result);
                 }
             } else {
                 $result = json_decode(authenticateUser($data['email'], $data['password']), true);
+                $_SESSION['user'] = $result['users'];
                 // Devolver la respuesta en formato JSON
                 header('Content-Type: application/json');
                 echo json_encode($result);

@@ -8,6 +8,7 @@ let btnRetryGame;
 let btnRetryGameHandler;
 let time;
 let namePlayer;
+let profilePic;
 
 function init(){
     result = document.querySelector('#result');
@@ -16,6 +17,7 @@ function init(){
     btnRetryGame = document.querySelector('#btnRetryGame');
     time = document.querySelector('#time');
     namePlayer = document.querySelector('#namePlayer');
+    profilePic = document.querySelector('#profilePic');
 }
 
 let getResults = function(){
@@ -23,7 +25,7 @@ let getResults = function(){
     .then(response => response.json())
     .then(data => {
         console.log(data)
-
+        profilePic.src = data['user']['profile_pic'];
         result.textContent = data['nAnswersCorrect'] + "/10";
         totalPoints.textContent = data['totalPoints'];
         time.textContent = (data['diff']*1000)+"ms";

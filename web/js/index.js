@@ -12,7 +12,7 @@ let verifySession = function () {
         .then(data => {
             console.log(data);
             if (!data.login) {
-                allFunctions.cargarPage(app, '../pages/register.html', '../js/register.js', 'registerLoaded');
+                allFunctions.cargarPage(app, '../pages/login.html', '../js/login.js', 'loginLoaded');
             }else{
                 allFunctions.cargarPage(app, '../pages/home.html', '../js/home.js', 'homeLoaded');
             }

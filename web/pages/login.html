@@ -24,26 +24,34 @@
             </div>
             <div class="text-start">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 mb-3">
                         <label class="text-primary fs-6">Correo electrónico</label>
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <span class="input-group-text">
                                 <i class="bi bi-envelope text-primary"></i>
                             </span>
                             <input type="email" class="form-control" id="email"/>
                         </div>
+                        <div id="validatorEmail"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <label class="text-primary fs-6">Contraseña</label>
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <button class="input-group-text" id="btnSeePassword">
                                 <i class="bi bi-eye text-primary" id="notSeeIcon"></i>
                                 <i class="bi bi-eye-slash text-primary d-none" id="seeIcon"></i>
                             </button>
                             <input type="password" class="form-control" id="password"/>
                         </div>
+                        <div id="validatorPassword"></div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <button class="text-primary btn m-0 p-0 mt-lg-1 fs-7"
+                                id="btnRedirigirRegister">No tienes cuenta? Registrate</button>
                     </div>
                 </div>
 
@@ -56,6 +64,17 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToastError" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body bg-danger bg-opacity-75 text-white rounded-2">
+                <div class="d-flex justify-content-center align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+                    <p class="m-0" id="toastMsg"></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

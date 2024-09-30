@@ -3,11 +3,14 @@ import * as allFunctions from '../helpers/all.js'; // Importar todas las funcion
 let btnSeePassword1;
 let btnSeePassword2;
 let btnRegister;
+let btnRedirigirLogin;
 
 function init() {
     btnSeePassword1 = document.querySelector('#btnSeePassword1');
     btnSeePassword2 = document.querySelector('#btnSeePassword2');
     btnRegister = document.querySelector('#btnRegister');
+    btnRedirigirLogin = document.querySelector('#btnRedirigirLogin');
+
 }
 
 let initBtnSeePassword1 = function () {
@@ -131,17 +134,27 @@ let passwordCheck = function () {
     });
 }
 
+let initBtnRedirigirLogin = function(){
+    btnRedirigirLogin.addEventListener('click', function(){
+        allFunctions.cargarPage(document.querySelector('#app'), '../pages/login.html', '../js/login.js', 'loginLoaded');
+    });
+}
+
 let initBtnRegister = function () {
     btnRegister.addEventListener('click', function () {
+        let validatorName = document.querySelector('#validatorName');
+        let validatorEmail = document.querySelector('#validatorEmail');
+        let toastMsg = document.querySelector('#toastMsg');
+
         let email = document.querySelector('#email');
         let password = document.querySelector('#password');
         let name = document.querySelector('#name');
         let liveToastError = document.querySelector('#liveToastError');
-        
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToastError)
+
         console.log(email.value);
         console.log(password.value);
         console.log(name.value);
-        // /back/server.php?route=authenticate
 
         fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=authenticate', {
             method: 'POST',
@@ -158,8 +171,24 @@ let initBtnRegister = function () {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                if(!data.status){
-                    // liveToastError.
+                if (!data.status) {
+                    console.log("ya existe.")
+                    if(data.name.users != null){
+                        validatorName.innerHTML = `<label class="text-danger fs-7">Este campo ya existe</label>`;
+                        toastMsg.textContent = "El nombre ya existe";
+                    }
+                    if(data.email.users != null){
+                        validatorEmail.innerHTML = `<label class="text-danger fs-7">Este campo ya existe</label>`;   
+                        toastMsg.textContent = "El email ya existe";
+                    }
+
+                    if(data.name.users != null && data.email.users != null) toastMsg.textContent = "El nombre o el email ya existen.";
+
+                    toastBootstrap.show();
+                } else {
+                    console.log("creado exitosamente")
+                    allFunctions.cargarPage(document.querySelector('#app'), '../pages/home.html', '../js/home.js', 'homeLoaded');
+
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -172,4 +201,5 @@ document.querySelector('#app').addEventListener('registerLoaded', function (even
     initBtnSeePassword2();
     initBtnRegister();
     passwordCheck();
+    initBtnRedirigirLogin();
 });

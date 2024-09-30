@@ -100,7 +100,7 @@ function authenticateUser($email, $password)
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
     }
 
-    $result = mysqli_query($conex, "SELECT * FROM user WHERE email=$email and password=$password");
+    $result = mysqli_query($conex, "SELECT * FROM user WHERE email='$email' and password='$password'");
 
     if ($result === false) {
         return json_encode(['status' => 'error', 'message' => 'Error al seleccionar usuarios: ' . mysqli_error($conex)]);
