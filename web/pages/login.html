@@ -1,0 +1,61 @@
+<style>
+    .center-screen {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    body {
+        background-color: #71CBF0;
+    }
+</style>
+<div class="center-screen w-100 text-center" id="content">
+    <div class="card" style="width: 40%;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="" style="height: 100px; overflow: hidden;">
+                        <img src="../img/question.png" class="img-fluid"
+                            style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    </div>
+                </div>
+            </div>
+            <div class="text-start">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="text-primary fs-6">Correo electrónico</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope text-primary"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="text-primary fs-6">Contraseña</label>
+                        <div class="input-group mb-3">
+                            <button class="input-group-text" id="btnSeePassword">
+                                <i class="bi bi-eye text-primary" id="notSeeIcon"></i>
+                                <i class="bi bi-eye-slash text-primary d-none" id="seeIcon"></i>
+                            </button>
+                            <input type="password" class="form-control" id="password"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-12">
+                        <button class="btn btn-primary w-100 btn-lg" id="btnLogin">
+                            Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

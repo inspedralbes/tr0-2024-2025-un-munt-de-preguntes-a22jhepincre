@@ -2,61 +2,10 @@
 include('conexion.php');
 // Inicia la sesión si es necesario
 session_start();
-
 // Recoge el método de la petición
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 // Recoge la ruta solicitada (por ejemplo, api.php?route=algo)
 $route = isset($_GET['route']) ? $_GET['route'] : '';
-
-// function getPreguntas()
-// {
-//     $preguntasFile = json_decode(file_get_contents("data.json"), true);
-
-//     if ($preguntasFile === null) {
-//         http_response_code(500);
-//         echo json_encode(["error" => "No se pudo leer el archivo de preguntas"]);
-//         exit;
-//     }
-//     $_SESSION['preguntasFileJSON'] = $preguntasFile;
-//     $idsRandom = [];
-
-//     while (count($idsRandom) < 10) {
-//         $idRandom = rand(0, count($_SESSION['preguntasFileJSON']['preguntes']) - 1);
-
-//         if (!in_array($idRandom, $idsRandom)) {
-//             $idsRandom[] = $idRandom;
-//         }
-//     }
-
-//     $preguntasRandom = [];
-
-//     foreach ($idsRandom as $id) {
-//         $preguntasRandom[] = $_SESSION['preguntasFileJSON']['preguntes'][$id];
-//     }
-
-//     $_SESSION['preguntasFile'] = $preguntasRandom;
-
-//     $preguntas = [];
-
-//     foreach ($preguntasRandom as $pregunta) {
-//         $questionWithoutCorrect = [];
-//         foreach ($pregunta['respostes'] as $resposta) {
-//             $questionWithoutCorrect[] = [
-//                 'id' => $resposta['id'],
-//                 'resposta' => $resposta['resposta']
-//             ];
-//         }
-//         $preguntas[] = [
-//             'id' => $pregunta['id'],
-//             'pregunta' => $pregunta['pregunta'],
-//             'respostes' => $questionWithoutCorrect,
-//             'imatge' => $pregunta['imatge']
-//         ];
-//     }
-
-//     $_SESSION['preguntasWithoutCorrect'] = $preguntas;
-//     // return $preguntas;
-// }
 
 function getNow()
 {
@@ -83,6 +32,14 @@ switch ($requestMethod) {
 function handleGetRequest($route)
 {
     switch ($route) {
+            // back/server.php?route=getAuthenticate
+        case 'getAuthenticate':
+            if (!isset($_SESSION['user'])) {
+                echo json_encode(['login' => false, "msg" => "No hay una sesion iniciada."]);
+            } else {
+                echo json_encode(['login' => true, "msg" => "Hay una sesion iniciada."]);
+            }
+            break;
         case 'preguntas':
             // http://localhost/PR0/PR0/back/server.php?route=preguntas preguntas sin la correcta
             $selectQuestions = json_decode(getQuestions(), true);
@@ -184,6 +141,38 @@ function handleGetRequest($route)
 function handlePostRequest($route)
 {
     switch ($route) {
+            // /back/server.php?route=authenticate necesita data
+        case 'authenticate':
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (is_null($data)) {
+                http_response_code(400); // Bad Request
+                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+                return;
+            }
+
+            if ($data['register']) {
+                $validatorName = json_decode(validatorName($data['name']), true);
+                $validatorEmail = json_decode(validatorEmail($data['email']), true);
+
+                // echo json_encode(['name'=>$validatorName, 'email'=>$validatorEmail]);
+                if ($validatorEmail != null || $validatorName != null) {
+                    echo json_encode(['status' => false, 'msg' => "El nombre o el correo ya existen."]);
+                } else {
+                    $result = json_decode(addUser($data['name'], $data['email'], $data['password']), true);
+                    // Devolver la respuesta en formato JSON
+                    $_SESSION['user'] = $result['user'];
+                    header('Content-Type: application/json');
+                    echo json_encode($result);
+                }
+            } else {
+                $result = json_decode(authenticateUser($data['email'], $data['password']), true);
+                // Devolver la respuesta en formato JSON
+                header('Content-Type: application/json');
+                echo json_encode($result);
+            }
+
+            break;
             // http://localhost/PR0/PR0/back/server.php?route=verifyAnswer necesita data
         case 'verifyAnswer':
             // Leer el contenido JSON desde la petición POST
@@ -212,20 +201,20 @@ function handlePostRequest($route)
             echo json_encode($_SESSION['answersSuccess']);
             break;
             // http://localhost/PR0/PR0/back/server.php?route=addUser necesita data
-        case 'addUser':
-            $data = json_decode(file_get_contents('php://input'), true);
-            if (is_null($data)) {
-                http_response_code(400); // Bad Request
-                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
-                return;
-            }
+            // case 'addUser':
+            //     $data = json_decode(file_get_contents('php://input'), true);
+            //     if (is_null($data)) {
+            //         http_response_code(400); // Bad Request
+            //         echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+            //         return;
+            //     }
 
-            $name = $data['name'];
+            //     $name = $data['name'];
 
-            $result = json_decode(addUser($name), true);
-            $_SESSION['user'] = $result['user'];
-            echo json_encode($result);
-            break;
+            //     $result = json_decode(addUser($name), true);
+            //     $_SESSION['user'] = $result['user'];
+            //     echo json_encode($result);
+            //     break;
             // /back/server.php?route=addQuestion necesita data
         case 'addQuestion':
             $data = json_decode(file_get_contents('php://input'), true);
@@ -246,7 +235,7 @@ function handlePostRequest($route)
             }
             // echo json_encode($data);
             $result = json_decode(updateQuestion($data['question'], $data['answers']), true);
-            
+
             echo json_encode($result);
             break;
         case 'deleteQuestion':
