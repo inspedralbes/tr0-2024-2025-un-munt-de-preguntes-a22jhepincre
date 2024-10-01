@@ -166,7 +166,8 @@ function handlePostRequest($route)
                 } else {
                     $result = json_decode(addUser($data['name'], $data['email'], $data['password']), true);
                     // Devolver la respuesta en formato JSON
-                    $_SESSION['user'] = $result['users'];
+                   
+                    $_SESSION['user'] = $result['user']; 
                     header('Content-Type: application/json');
                     echo json_encode($result);
                 }

@@ -3,12 +3,14 @@
 function conectDB()
 {
     $server = "localhost";
-    $user = "a22jhepincre";
-    $password = "root";
-    $dbName = "PR0";
+    $user = "root";
+    $password = "";
+    $dbName = "pr0";
 
     return mysqli_connect($server, $user, $password, $dbName);
 }
+
+
 
 function closeDB($conex)
 {
