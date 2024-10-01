@@ -206,22 +206,6 @@ function handlePostRequest($route)
             header('Content-Type: application/json');
             echo json_encode($_SESSION['answersSuccess']);
             break;
-            // http://localhost/PR0/PR0/back/server.php?route=addUser necesita data
-            // case 'addUser':
-            //     $data = json_decode(file_get_contents('php://input'), true);
-            //     if (is_null($data)) {
-            //         http_response_code(400); // Bad Request
-            //         echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
-            //         return;
-            //     }
-
-            //     $name = $data['name'];
-
-            //     $result = json_decode(addUser($name), true);
-            //     $_SESSION['user'] = $result['user'];
-            //     echo json_encode($result);
-            //     break;
-            // /back/server.php?route=addQuestion necesita data
         case 'addQuestion':
             $data = json_decode(file_get_contents('php://input'), true);
             if (is_null($data)) {

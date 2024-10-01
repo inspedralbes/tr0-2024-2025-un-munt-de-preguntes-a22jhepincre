@@ -15,45 +15,6 @@ function closeDB($conex)
     mysqli_close($conex);
 }
 
-//functions for user
-// function addUser($name)
-// {
-//     $conex = conectDB();
-
-//     if (!$conex) {
-//         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
-//     }
-
-//     $stmt = mysqli_prepare($conex, "INSERT INTO user (name) VALUES (?)");
-
-//     if ($stmt === false) {
-//         return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
-//     }
-
-//     mysqli_stmt_bind_param($stmt, "s", $name);
-
-//     if (mysqli_stmt_execute($stmt)) {
-//         $userId = mysqli_insert_id($conex);
-
-//         $stmt = mysqli_prepare($conex, "SELECT * FROM user WHERE id = ?");
-//         mysqli_stmt_bind_param($stmt, "i", $userId);
-//         mysqli_stmt_execute($stmt);
-
-//         $result = mysqli_stmt_get_result($stmt);
-//         $userData = mysqli_fetch_assoc($result); // Obtienes el objeto completo
-
-//         $response = json_encode(['status' => 'success', 'message' => 'Usuario añadido exitosamente.', 'user' => $userData]);
-//     } else {
-//         $response = json_encode(['status' => 'error', 'message' => 'Error al añadir el usuario: ' . mysqli_error($conex)]);
-//     }
-
-//     // Cierra la sentencia y la conexión
-//     mysqli_stmt_close($stmt);
-//     closeDB($conex);
-
-//     return $response;
-// }
-
 function addUser($name, $email, $password)
 {
     $conex = conectDB();
