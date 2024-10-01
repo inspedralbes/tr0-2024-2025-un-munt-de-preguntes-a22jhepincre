@@ -295,8 +295,8 @@ function insertQuestion($pregunta, $imatge, $difficult, $answers)
 }
 
 /**
- * @param answers array [object] object {resposta:string, correcta:boolean}
  * @param questionId question id
+ * @param answers array [object] object {resposta:string, correcta:boolean}
  */
 function insertAnswers($questionId, $answers)
 {
@@ -312,7 +312,7 @@ function insertAnswers($questionId, $answers)
             return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
         }
 
-        mysqli_stmt_bind_param($stmt, "ssi", $questionId, $answer['resposta'], $answer['correcta']);
+        mysqli_stmt_bind_param($stmt, "isi", $questionId, $answer['resposta'], $answer['correcta']);
 
         if (mysqli_stmt_execute($stmt)) {
             $response = json_encode(['status' => 'success', 'message' => 'Resposta añadido exitosamente.']);
