@@ -19,7 +19,18 @@ function getRanking(){
             html += `
                 <div class="card">
                     <div class="card-body">
-                        ${user['name']} - ${user['total_score']}
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="me-2" style="border-radius: 100px; width:60px; height: 6 0px; overflow: hidden;">
+                                <img src="${user['profile_pic']}" alt="Profile Picture"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="fw-bold fs-4 me-2">
+                                ${user['name']}
+                            </div>
+                            <div class="fw-bold fs-4 me-2">
+                            ${user['total_score']}
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
