@@ -37,7 +37,7 @@ function handleGetRequest($route)
             if (!isset($_SESSION['user'])) {
                 echo json_encode(['login' => false, "msg" => "No hay una sesion iniciada."]);
             } else {
-                echo json_encode(['login' => true, "msg" => "Hay una sesion iniciada."]);
+                echo json_encode(['login' => true, "msg" => "Hay una sesion iniciada.", 'user'=>$_SESSION['user']]);
             }
             break;
             // back/server.php?route=logout
