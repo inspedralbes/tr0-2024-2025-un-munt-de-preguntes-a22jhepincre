@@ -3,9 +3,9 @@
 function conectDB()
 {
     $server = "localhost";
-    $user = "root";
-    $password = "";
-    $dbName = "pr0";
+    $user = "a22jhepincre";
+    $password = "root";
+    $dbName = "PR0";
 
     return mysqli_connect($server, $user, $password, $dbName);
 }
@@ -281,7 +281,7 @@ function insertQuestion($pregunta, $imatge, $difficult, $answers)
 
     if (mysqli_stmt_execute($stmt)) {
         $questionId = mysqli_insert_id($conex);
-        $resultAddAnswers = insertAnswers($questionId, $answers);
+        $resultAddAnswers = json_decode(insertAnswers($questionId, $answers),true);
         $response = json_encode(['status' => 'success', 'message' => 'Pregunta añadido exitosamente.', 'idQuestion' => $questionId, 'answers' => $resultAddAnswers]);
     } else {
         $response = json_encode(['status' => 'error', 'message' => 'Error al añadir el pregunta: ' . mysqli_error($conex)]);
