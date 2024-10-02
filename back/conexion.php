@@ -263,7 +263,7 @@ function getQuestions()
 }
 
 //crud questions and answers
-function insertQuestion($pregunta, $imatge, $difficult, $answers)
+function insertQuestion($pregunta, $imatge, $difficult)
 {
     $conex = conectDB();
 
@@ -281,8 +281,8 @@ function insertQuestion($pregunta, $imatge, $difficult, $answers)
 
     if (mysqli_stmt_execute($stmt)) {
         $questionId = mysqli_insert_id($conex);
-        $resultAddAnswers = json_decode(insertAnswers($questionId, $answers),true);
-        $response = json_encode(['status' => 'success', 'message' => 'Pregunta añadido exitosamente.', 'idQuestion' => $questionId, 'answers' => $resultAddAnswers]);
+        // $resultAddAnswers = json_decode(insertAnswers($questionId, $answers),true);
+        $response = json_encode(['status' => 'success', 'message' => 'Pregunta añadido exitosamente.', 'idQuestion' => $questionId]);
     } else {
         $response = json_encode(['status' => 'error', 'message' => 'Error al añadir el pregunta: ' . mysqli_error($conex)]);
     }

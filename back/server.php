@@ -214,8 +214,9 @@ function handlePostRequest($route)
                 echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
                 return;
             }
-            $result = json_decode(insertQuestion($data['pregunta'], $data['imatgeURL'], $data['dificultat'], $data['answers']), true);
-            echo json_encode($result);
+            $question = json_decode(insertQuestion($data['pregunta'], $data['imatgeURL'], $data['dificultat']), true);
+            $answers = json_decode(insertAnswers($question['idQuestion'], $data['answers']), true);
+            echo json_encode(["question" => $question, 'answers' => $answers]);
             break;
         case 'updateQuestion':
             $data = json_decode(file_get_contents('php://input'), true);
