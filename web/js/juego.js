@@ -61,6 +61,7 @@ let initPregunta = function(){
     fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=initPregunta')
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         containerQuestion.textContent = data.pregunta;
             containerAnswers.innerHTML = ``;
             let answersHtml = ``;

@@ -152,13 +152,14 @@ function getRanking()
     return $response;
 }
 
-function setPoints($id, $points)
+function setPoints($id)
 {
     $conex = conectDB();
 
     if (!$conex) {
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
     }
+    $points = json_decode(totalScore($id), true);
 
     $stmt = mysqli_prepare($conex, "UPDATE user SET total_score = ? WHERE id = ?");
 
@@ -166,7 +167,7 @@ function setPoints($id, $points)
         return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
     }
 
-    mysqli_stmt_bind_param($stmt, "ii", $points, $id);
+    mysqli_stmt_bind_param($stmt, "ii", $points['totalPoints'], $id);
 
     if (mysqli_stmt_execute($stmt)) {
         $response = json_encode(['status' => 'success', 'message' => 'Usuario modificado exitosamente.']);
@@ -182,7 +183,7 @@ function setPoints($id, $points)
 }
 
 //functions for questions
-function getRandomQuestions()
+function getRandomQuestions($difficult, $numQuestions)
 {
     $conex = conectDB();
 
@@ -190,7 +191,11 @@ function getRandomQuestions()
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
     }
 
-    $result = mysqli_query($conex, "SELECT * FROM questions ORDER BY RAND() LIMIT 10;");
+    if (empty($difficult)) {
+        return json_encode(['status' => 'error', 'message' => 'La dificultad no puede estar vacía.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT * FROM questions WHERE difficult='$difficult' ORDER BY RAND() LIMIT $numQuestions;");
 
     if ($result === false) {
         return json_encode(['status' => 'error', 'message' => 'Error al seleccionar questions: ' . mysqli_error($conex)]);
@@ -215,7 +220,7 @@ function getRandomQuestions()
         $questions[] = $row;
     }
 
-    $response = json_encode(['status' => 'success', 'questions' => $questions]);
+    $response = json_encode(['status' => 'success', 'questions' => $questions, 'difficult'=>$difficult, 'numQuestions'=>$numQuestions]);
 
     closeDB($conex);
 
@@ -508,4 +513,86 @@ function verfiyAnswer($idAnswer, $idQuestion)
 
     closeDB($conex);
     return $response;
+}
+
+
+//functions for games
+function setGame($idUser, $score, $coins, $nQuestions, $nQuestionsCorrect, $nQuestionsIncorrect, $time){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $stmt = mysqli_prepare($conex, "INSERT INTO games (idUser, score, coins, n_questions, n_questions_correct, n_questions_incorrect, time) VALUES (?,?,?,?,?,?,?)");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    mysqli_stmt_bind_param($stmt, "iiiiiii", $idUser, $score, $coins, $nQuestions, $nQuestionsCorrect, $nQuestionsIncorrect, $time);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $gameId = mysqli_insert_id($conex);
+        $response = json_encode(['status' => 'success', 'message' => 'Game añadido exitosamente.', 'gameId'=>$gameId]);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al añadir el Game: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
+function totalScore($idUser){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT AVG(score) as total_points FROM games WHERE idUser=$idUser");
+
+    if ($result === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar questions: ' . mysqli_error($conex)]);
+    }
+
+    $totalPoints = mysqli_fetch_assoc($result);
+
+    $response = json_encode(['status' => 'success', 'totalPoints' => $totalPoints['total_points']]);
+
+    closeDB($conex);
+
+    return $response;   
+}
+
+function getGames($idUser){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT * FROM games WHERE idUser=$idUser");
+
+    if ($result === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar questions: ' . mysqli_error($conex)]);
+    }
+
+    // $totalPoints = mysqli_fetch_assoc($result);
+    $row = [];
+
+    while ($rowGame = mysqli_fetch_assoc($result)) {
+        $row[] = $rowGame;
+    }
+
+    $games = $row;
+
+    $response = json_encode(['status' => 'success', 'games' => $games]);
+
+    closeDB($conex);
+
+    return $response;   
 }

@@ -10,6 +10,12 @@ let containerAdminQuestions;
 let containerBtnPlay;
 let containerBtnLogin;
 let btnLogin;
+let btnConfig;
+let modalConfig;
+let modalElement;
+let numQuestions;
+let difficult;
+let btnSaveConfig;
 
 function init() {
     btnPlay = document.querySelector('#btnPlay');
@@ -22,9 +28,15 @@ function init() {
     containerBtnPlay = document.querySelector('#containerBtnPlay');
     containerBtnLogin = document.querySelector('#containerBtnLogin');
     btnLogin = document.querySelector('#btnLogin');
+    btnConfig = document.querySelector('#btnConfig');
+    modalElement = document.querySelector('#modalConfig');
+    modalConfig = new bootstrap.Modal(modalElement);
+    numQuestions = document.querySelector('#numQuestions');
+    difficult = document.querySelector('#difficult');
+    btnSaveConfig = document.querySelector('#btnSaveConfig');
 }
 
-let initHome = function(){
+let initHome = function () {
     fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=getAuthenticate')
         .then(response => response.json())
         .then(data => {
@@ -36,7 +48,7 @@ let initHome = function(){
                 containerBtnLogin.classList.remove('d-none');
                 userData.innerHTML = ``;
                 initBtnLogin();
-            }else{
+            } else {
                 //logeado
                 containerBtnLogin.classList.add('d-none');
                 userData.innerHTML = `
@@ -49,9 +61,9 @@ let initHome = function(){
                 </div>
                 `;
 
-                if(data['user']['role'] !== "admin"){
+                if (data['user']['role'] !== "admin") {
                     containerAdminQuestions.classList.add('d-none')
-                }else{
+                } else {
                     containerAdminQuestions.classList.remove('d-none')
                 }
             }
@@ -59,14 +71,49 @@ let initHome = function(){
         })
 }
 
-let initBtnToProfile = function(){
-    btnToProfile.addEventListener('click', function(){
+let iniBtnConfig = function () {
+    btnConfig.addEventListener('click', function () {
+        modalConfig.show();
+    });
+}
+
+let initBtnSaveConfig = function () {
+    btnSaveConfig.addEventListener('click', function () {
+        let numQuestions = document.querySelector('#numQuestions');
+        let difficult = document.querySelector('#difficult');
+
+        console.log(numQuestions.value);
+        console.log(difficult.value);
+
+        fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=setConfig', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "difficult":difficult.value,
+                "numQuestions":numQuestions.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            modalConfig.hide();
+        })
+        .catch(error => console.error('Error:', error));
+
+        
+    });
+}
+
+let initBtnToProfile = function () {
+    btnToProfile.addEventListener('click', function () {
         allFunctions.cargarPage(document.querySelector('#app'), '../pages/profile.html', '../js/profile.js', 'profileLoaded');
     });
 }
 
-let initBtnLogin = function(){
-    btnLogin.addEventListener('click', function(){
+let initBtnLogin = function () {
+    btnLogin.addEventListener('click', function () {
         allFunctions.cargarPage(document.querySelector('#app'), '../pages/login.html', '../js/login.js', 'loginLoaded');
     });
 }
@@ -76,8 +123,6 @@ let initBtnPlay = function () {
         allFunctions.cargarPage(document.querySelector('#app'), '../pages/juego.html', '../js/juego.js', 'juegoLoaded');
     })
 }
-
-
 
 let initBtnAdminQuestions = function () {
     btnAdminQuestions.addEventListener('click', function () {
@@ -98,5 +143,7 @@ document.querySelector('#app').addEventListener('homeLoaded', function (event) {
     initBtnAdminQuestions();
     initBtnRanking();
     initHome();
+    iniBtnConfig();
     initBtnToProfile();
+    initBtnSaveConfig();
 });

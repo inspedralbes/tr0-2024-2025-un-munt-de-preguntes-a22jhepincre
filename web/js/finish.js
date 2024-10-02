@@ -26,7 +26,7 @@ let getResults = function(){
     .then(data => {
         console.log(data)
         profilePic.src = data['user']['profile_pic'];
-        result.textContent = data['nAnswersCorrect'] + "/10";
+        result.textContent = data['nAnswersCorrect'] + "/" + data['nQuestions'];
         totalPoints.textContent = data['totalPoints'];
         time.textContent = (data['diff']*1000)+"ms";
         namePlayer.textContent = data['user']['name'];

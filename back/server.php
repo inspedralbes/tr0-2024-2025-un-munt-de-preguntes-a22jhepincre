@@ -37,13 +37,13 @@ function handleGetRequest($route)
             if (!isset($_SESSION['user'])) {
                 echo json_encode(['login' => false, "msg" => "No hay una sesion iniciada."]);
             } else {
-                echo json_encode(['login' => true, "msg" => "Hay una sesion iniciada.", 'user'=>$_SESSION['user']]);
+                echo json_encode(['login' => true, "msg" => "Hay una sesion iniciada.", 'user' => $_SESSION['user']]);
             }
             break;
             // back/server.php?route=logout
         case 'logout':
             session_destroy();
-            echo json_encode(['status'=>"success", 'msg'=>"Se cerro la sesión con exitó"]);
+            echo json_encode(['status' => "success", 'msg' => "Se cerro la sesión con exitó"]);
             break;
         case 'preguntas':
             // http://localhost/PR0/PR0/back/server.php?route=preguntas preguntas sin la correcta
@@ -59,8 +59,15 @@ function handleGetRequest($route)
             $_SESSION['indicePreguntasWithoutCorrect'] = 0;
             $_SESSION['answersSuccess'] = 0;
             $_SESSION['start'] = getNow();
+            if (!isset($_SESSION['difficult'])) {
+                $_SESSION['difficult'] = "easy";
+            }
+            if (!isset($_SESSION['numQuestions'])) {
+                $_SESSION['numQuestions'] = 10;
+            }
 
-            $selectQuestions = json_decode(getRandomQuestions(), true);
+            $selectQuestions = json_decode(getRandomQuestions($_SESSION['difficult'], $_SESSION['numQuestions']), true);
+            
             $_SESSION['preguntasWithoutCorrect'] = $selectQuestions['questions'];
 
             $id = $_SESSION['indicePreguntasWithoutCorrect'];
@@ -99,13 +106,16 @@ function handleGetRequest($route)
             $diff = $endDate - $startDate;
 
             $totalPoints = ($_SESSION['answersSuccess'] * 20) + $diff;
-            setPoints($_SESSION['user']['id'], $totalPoints);
+            $coins = ($_SESSION['answersSuccess'] * 5);
+            setGame($_SESSION['user']['id'], $totalPoints, $coins, $_SESSION['numQuestions'], $_SESSION['answersSuccess'], $_SESSION['numQuestions'] - $_SESSION['answersSuccess'], $diff);
+            setPoints($_SESSION['user']['id']);
             echo json_encode([
                 "nAnswersCorrect" => $_SESSION['answersSuccess'],
                 "startDate" => $_SESSION['start'],
                 "endDate" => $_SESSION['end'],
                 "diff" => $diff,
                 'totalPoints' => $totalPoints,
+                'nQuestions'=>$_SESSION['numQuestions'],
                 'user' => $_SESSION['user']
             ]);
             break;
@@ -166,8 +176,8 @@ function handlePostRequest($route)
                 } else {
                     $result = json_decode(addUser($data['name'], $data['email'], $data['password']), true);
                     // Devolver la respuesta en formato JSON
-                   
-                    $_SESSION['user'] = $result['user']; 
+
+                    $_SESSION['user'] = $result['user'];
                     header('Content-Type: application/json');
                     echo json_encode($result);
                 }
@@ -241,6 +251,19 @@ function handlePostRequest($route)
 
             $result = json_decode(deleteQuestion($data['idQuestion']), true);
             echo json_encode(["preguntas" => $result, "respuesotas" => $resultDeleteAnswers]);
+            break;
+        case 'setConfig':
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (is_null($data)) {
+                http_response_code(400); // Bad Request
+                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+                return;
+            }
+
+            $_SESSION['difficult'] = $data['difficult'];
+            $_SESSION['numQuestions'] = $data['numQuestions'];
+
+            echo json_encode(['status' => 'success', 'message' => "Se ha cambiado la config del user."]);
             break;
         default:
             // Ruta no encontrada para POST
