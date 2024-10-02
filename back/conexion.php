@@ -10,8 +10,6 @@ function conectDB()
     return mysqli_connect($server, $user, $password, $dbName);
 }
 
-
-
 function closeDB($conex)
 {
     mysqli_close($conex);

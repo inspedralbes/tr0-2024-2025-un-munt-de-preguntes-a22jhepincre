@@ -9,7 +9,6 @@
     body {
         background-color: #71CBF0;
     }
-
 </style>
 <div class="center-screen w-100 text-center" id="content">
     <div class="w-75">
@@ -19,10 +18,44 @@
         <div class="card">
             <div class="card-body text-start">
                 <p class="fs-1 fw-bold">Perfil</p>
-                <div class="row">
-                    <div class="col-lg-3"></div>
+                <ul class="nav nav-tabs nav-line-tabs mb-5 fs-6">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#avatars">Avatars</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#userData">User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#history">Historial</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content mb-lg-4 mb-2" id="myTabContent">
+                    <div class="tab-pane fade show active" id="avatars" role="tabpanel">
+                        <div class="row w-100">
+                            <div class="col-lg-3 col-12">
+                                <div class="d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
+                                    <img src="../img/avatars/chica1.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-12">
+                                <div class="row">
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <div class="d-flex justify-content-center align-items-center" style="height: 80px; border:1px solid; overflow: hidden;">
+                                            <img src="../img/avatars/chica1.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </div>
+                                    </div>                                                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="userData" role="tabpanel">
+                        <button class="btn btn-danger btn-sm fw-bold btn-shadow" id="btnLogOut">LOGOUT</button>
+                    </div>
+                    <div class="tab-pane fade" id="history" role="tabpanel">
+                        ...
+                    </div>
                 </div>
-                <button class="btn btn-danger btn-sm fw-bold btn-shadow" id="btnLogOut">LOGOUT</button>
             </div>
         </div>
     </div>
