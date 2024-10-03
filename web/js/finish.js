@@ -9,6 +9,8 @@ let btnRetryGameHandler;
 let time;
 let namePlayer;
 let profilePic;
+let btnCarouselIndicators;
+let containerCarouselIndicators;
 
 function init(){
     result = document.querySelector('#result');
@@ -18,6 +20,8 @@ function init(){
     time = document.querySelector('#time');
     namePlayer = document.querySelector('#namePlayer');
     profilePic = document.querySelector('#profilePic');
+    btnCarouselIndicators = document.querySelector('#btnCarouselIndicators');
+    containerCarouselIndicators = document.querySelector('#containerCarouselIndicators');
 }
 
 let getResults = function(){
@@ -30,6 +34,24 @@ let getResults = function(){
         totalPoints.textContent = data['totalPoints'];
         time.textContent = (data['diff']*1000)+"ms";
         namePlayer.textContent = data['user']['name'];
+        let testResults = data['testResults'];
+
+        testResults.forEach((test, key) => {
+            btnCarouselIndicators.innerHTML += 
+            `
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${key}" class="${key == 0 ? 'active':''} text-primary"
+                     ${key == 0 ? 'aria-current="true"':''} aria-label="Slide ${key}"></button>
+            `;
+
+            containerCarouselIndicators.innerHTML += 
+            `
+            <div class="carousel-item w-100 h-100 ${key == 0 ? 'active':''}">
+                <div class="w-100 h-100">
+                    ${test.pregunta}
+                </div>
+            </div>
+            `;
+        });
     })
 }
 btnHomeHandler = function(){

@@ -10,6 +10,22 @@
         align-items: center;
         flex-direction: column;
     }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: invert(32%) sepia(100%) saturate(7000%) hue-rotate(240deg) brightness(95%) contrast(100%);
+    }
+
+    .carousel-indicators button {
+        background-color: rgba(0, 123, 255, 0.5) !important;
+        /* Azul primario semi-transparente */
+        border: none !important;
+    }
+
+    .carousel-indicators .active {
+        background-color: #007bff !important;
+        /* Azul primario sólido */
+    }
 </style>
 
 <div class="center-screen">
@@ -24,7 +40,7 @@
                             style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 </div>
-                
+
                 <div class="me-lg-5">
                     <p class="fs-3 fw-bold m-0" id="namePlayer"></p>
                 </div>
@@ -45,4 +61,27 @@
         <button class="btn btn-primary" id="btnRetryGame">Retry</button>
     </div>
 
+    <div class="w-50 mt-lg-4 mt-2">
+        <div class="card" style="min-height: 200px;">
+            <div class="card-body">
+                <label class="text-primary fs-6">Respuestas:</label>
+                <div id="carouselExampleIndicators" class="carousel slide" style="min-height: 200px;">
+                    <div class="carousel-indicators" id="btnCarouselIndicators">
+                    </div>
+                    <div class="carousel-inner" id="containerCarouselIndicators">
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon text-black" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon text-black" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
