@@ -123,6 +123,9 @@ function handleGetRequest($route)
         case 'ranking':
             echo getRanking();
             break;
+        case 'getFirstRanking':
+            echo getFirstRanking();
+            break;    
         case 'getQuestion':
             // Verifica si el parámetro 'id' está presente en la URL
             if (isset($_GET['id'])) {
@@ -142,6 +145,17 @@ function handleGetRequest($route)
                 // Si no se proporciona el 'id', devuelve un error
                 http_response_code(400);
                 echo json_encode(["error" => "ID no proporcionado"]);
+            }
+            break;
+        case 'getHistory':
+            // Verifica si el parámetro 'idUser' está presente en la URL
+            if (isset($_GET['idUser'])) {
+                $idUser = intval($_GET['idUser']);  // Obtiene el idUser de la URL
+                $result = json_decode(getGames($idUser), true);
+                echo json_encode($result);
+            } else {
+                http_response_code(400);  // Error 400 si no se proporciona 'idUser'
+                echo json_encode(["error" => "ID de usuario no proporcionado"]);
             }
             break;
         default:
@@ -265,6 +279,32 @@ function handlePostRequest($route)
 
             echo json_encode(['status' => 'success', 'message' => "Se ha cambiado la config del user."]);
             break;
+        case 'updateProfilePic':
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (is_null($data)) {
+                http_response_code(400); // Bad Request
+                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+                return;
+            }
+
+            $result = json_decode(updateProfilePic($data['idUser'], $data['profilePic']), true);
+            $_SESSION['user']['profile_pic'] = $result['user']['users']['profile_pic'];
+            echo json_encode(['status'=> 'success', 'message'=> $result['message'], 'user'=> $result['user']]);
+            break;
+        case 'updateUserData':
+            $data = json_decode(file_get_contents('php://input'), true);
+            if (is_null($data)) {
+                http_response_code(400); // Bad Request
+                echo json_encode(["error" => "No se han enviado datos o el formato es incorrecto"]);
+                return;
+            }
+
+            $result = json_decode(updateUserData($data['idUser'], $data['data']), true);
+            $_SESSION['user']['name'] = $result['user']['users']['name'];
+            $_SESSION['user']['email'] = $result['user']['users']['email'];
+
+            echo json_encode(['status'=> 'success', 'message'=> $result['message'], 'user'=> $result['user']]);
+            break;    
         default:
             // Ruta no encontrada para POST
             http_response_code(404);

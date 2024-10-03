@@ -16,6 +16,8 @@ let modalElement;
 let numQuestions;
 let difficult;
 let btnSaveConfig;
+let containerRanking;
+
 
 function init() {
     btnPlay = document.querySelector('#btnPlay');
@@ -34,6 +36,7 @@ function init() {
     numQuestions = document.querySelector('#numQuestions');
     difficult = document.querySelector('#difficult');
     btnSaveConfig = document.querySelector('#btnSaveConfig');
+    containerRanking = document.querySelector('#container-ranking');
 }
 
 let initHome = function () {
@@ -69,6 +72,41 @@ let initHome = function () {
             }
 
         })
+}
+
+let initPodio = function(){
+    fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=getFirstRanking')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        let html = ``;
+        let icon = "";
+        data['users'].forEach((user, key) => {
+            if(key==0) icon = `<i class="bi bi-star-fill" style="color:#fff633"></i>`;
+            else if(key==1) icon = `<i class="bi bi-star-fill" style="color:#c5c5c5"></i>`;
+            else if(key==2) icon = `<i class="bi bi-star-fill" style="color:#CD8032"></i>`;
+            else icon = key;
+            html += `
+                        <div class="d-flex align-items-center justify-content-start mb-lg-4 mb-2">
+                            <div class="fw-bold fs-4 me-2">
+                                ${icon}
+                            </div>
+                            <div class="me-2" style="border-radius: 100px; width:40px; height: 40px; overflow: hidden;">
+                                <img src="${user['profile_pic']}" alt="Profile Picture"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="fw-bold fs-4 me-2">
+                                ${user['name']}
+                            </div>
+                            <div class="fw-bold fs-4 me-2">
+                            ${user['total_score']}
+                            </div>
+                        </div>   
+            `;
+        });
+
+        containerRanking.innerHTML = html;
+    })
 }
 
 let iniBtnConfig = function () {
@@ -146,4 +184,5 @@ document.querySelector('#app').addEventListener('homeLoaded', function (event) {
     iniBtnConfig();
     initBtnToProfile();
     initBtnSaveConfig();
+    initPodio();
 });

@@ -15,6 +15,87 @@ function closeDB($conex)
     mysqli_close($conex);
 }
 
+// fuctions for user
+function updateProfilePic($idUser, $profilePic){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $stmt = mysqli_prepare($conex, "UPDATE user SET profile_pic = ? WHERE id = ?");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    mysqli_stmt_bind_param($stmt, "si", $profilePic, $idUser);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $user = json_decode(getUserById($idUser), true);
+        $response = json_encode(['status' => 'success', 'message' => 'Usuario modificado exitosamente.', 'user'=>$user]);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al modificar usuario: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
+function updateUserData($idUser, $data){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $stmt = mysqli_prepare($conex, "UPDATE user SET name = ?, email = ? WHERE id = ?");
+
+    if ($stmt === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssi", $data['name'], $data['email'], $idUser);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $user = json_decode(getUserById($idUser), true);
+        $response = json_encode(['status' => 'success', 'message' => 'Usuario modificado exitosamente.', 'user'=>$user]);
+    } else {
+        $response = json_encode(['status' => 'error', 'message' => 'Error al modificar usuario: ' . mysqli_error($conex)]);
+    }
+
+    // Cierra la sentencia y la conexión
+    mysqli_stmt_close($stmt);
+    closeDB($conex);
+
+    return $response;
+}
+
+function getUserById($id){
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT * FROM user WHERE id=$id");
+
+    if ($result === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar usuarios: ' . mysqli_error($conex)]);
+    }
+
+    $user = mysqli_fetch_assoc($result);
+
+    $response = json_encode(['status' => 'success', 'users' => $user]);
+
+    closeDB($conex);
+
+    return $response;
+}
+
 function addUser($name, $email, $password)
 {
     $conex = conectDB();
@@ -132,6 +213,33 @@ function getRanking()
     }
 
     $result = mysqli_query($conex, "SELECT * FROM user ORDER BY total_score DESC;");
+
+    if ($result === false) {
+        return json_encode(['status' => 'error', 'message' => 'Error al seleccionar usuarios: ' . mysqli_error($conex)]);
+    }
+
+    $users = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $users[] = $row;
+    }
+
+    $response = json_encode(['status' => 'success', 'users' => $users]);
+
+    closeDB($conex);
+
+    return $response;
+}
+
+function getFirstRanking()
+{
+    $conex = conectDB();
+
+    if (!$conex) {
+        return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
+    }
+
+    $result = mysqli_query($conex, "SELECT * FROM user ORDER BY total_score DESC LIMIT 5;");
 
     if ($result === false) {
         return json_encode(['status' => 'error', 'message' => 'Error al seleccionar usuarios: ' . mysqli_error($conex)]);

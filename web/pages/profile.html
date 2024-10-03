@@ -11,6 +11,7 @@
     }
 </style>
 <div class="center-screen w-100 text-center" id="content">
+    <input id="idUser" hidden/>
     <div class="w-75">
         <div class="text-start w-100 mb-lg-3">
             <button class="btn btn-primary mt-3" id="btnHome">Home</button>
@@ -35,26 +36,132 @@
                         <div class="row w-100">
                             <div class="col-lg-3 col-12">
                                 <div class="d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
-                                    <img src="../img/avatars/chica1.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQrF3t4HTqY8rjh54a9PrakBAZsJ5gPFv2CQ&s" 
+                                    class="img-fluid" 
+                                    style="max-height: 100%; max-width: 100%; object-fit: contain;" 
+                                    id="profilePicUser"/>
                                 </div>
                             </div>
                             <div class="col-lg-9 col-12">
                                 <div class="row">
                                     <div class="col-lg-3 col-6 mb-lg-4 mb-2">
-                                        <div class="d-flex justify-content-center align-items-center" style="height: 80px; border:1px solid; overflow: hidden;">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQrF3t4HTqY8rjh54a9PrakBAZsJ5gPFv2CQ&s">
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQrF3t4HTqY8rjh54a9PrakBAZsJ5gPFv2CQ&s" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/chica1.png">
                                             <img src="../img/avatars/chica1.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
-                                        </div>
-                                    </div>                                                                  
+                                        </button>
+                                    </div> 
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/chica2.png">
+                                            <img src="../img/avatars/chica2.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div> 
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/chica3.png">
+                                            <img src="../img/avatars/chica3.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div> 
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/chico1.png">
+                                            <img src="../img/avatars/chico1.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/chico2.png">
+                                            <img src="../img/avatars/chico2.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div>  
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/chico3.png">
+                                            <img src="../img/avatars/chico3.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div>    
+                                    <div class="col-lg-3 col-6 mb-lg-4 mb-2">
+                                        <button class="btn btnUpdateProfilePic d-flex justify-content-center align-items-center" 
+                                        style="height: 80px; overflow: hidden;"
+                                        data-profile-pic-url="../img/avatars/hacker.png">
+                                            <img src="../img/avatars/hacker.png" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                        </button>
+                                    </div>                                                            
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="userData" role="tabpanel">
+                        <div class="row w-100 mb-lg-4 mb-2">
+                            <div class="col-lg-3 col-12">
+                                <div class="d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
+                                    <img src="default.png" 
+                                    class="img-fluid" 
+                                    style="max-height: 100%; max-width: 100%; object-fit: contain;" 
+                                    id="profilePicUserData"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-12">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-lg-4 mb-2">
+                                        <label class="text-primary fs-7">Nombre</label>
+                                        <input type="text" class="form-control" id="nameUserData"/>
+                                    </div>    
+                                    <div class="col-lg-4 col-6 mb-lg-4 mb-2">
+                                        <label class="text-primary fs-7">Email</label>
+                                        <input type="email" class="form-control" id="emailUserData"/>
+                                    </div>                                                              
+                                </div>
+                                <div class="w-100">
+                                    <button class="btn btn-primary"
+                                    id="btnUpdateUser">Guardar</button>
+                                </div>
+                            </div>
+                        </div>
                         <button class="btn btn-danger btn-sm fw-bold btn-shadow" id="btnLogOut">LOGOUT</button>
                     </div>
                     <div class="tab-pane fade" id="history" role="tabpanel">
-                        ...
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Quantitat de Preguntes</th>
+                                        <th scope="col">Respostes correctes</th>
+                                        <th scope="col">Respostes incorrectes</th>
+                                        <th scope="col">Puntuació</th>
+                                        <th scope="col">Tiempo(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableGamesBody">
+        
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body bg-opacity-75 text-white rounded-2" id="toastType">
+                <div class="d-flex justify-content-center align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill fs-5 me-2" id="toastIcon"></i>
+                    <p class="m-0" id="toastMsg"></p>
                 </div>
             </div>
         </div>
