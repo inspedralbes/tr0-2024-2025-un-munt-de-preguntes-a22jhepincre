@@ -3,9 +3,9 @@
 function conectDB()
 {
     $server = "localhost";
-    $user = "a22jhepincre";
-    $password = "root";
-    $dbName = "PR0";
+    $user = "root";
+    $password = "";
+    $dbName = "pr0";
 
     return mysqli_connect($server, $user, $password, $dbName);
 }
@@ -607,7 +607,7 @@ function verfiyAnswer($idAnswer, $idQuestion)
         return json_encode(['status' => 'error', 'message' => 'No se pudo conectar.']);
     }
 
-    $query = mysqli_query($conex, "SELECT correcta FROM `answers` WHERE idQuestion=${idQuestion} and id=${idAnswer};");
+    $query = mysqli_query($conex, "SELECT * FROM `answers` WHERE idQuestion=${idQuestion} and id=${idAnswer};");
 
     if ($query === false) {
         return json_encode(['status' => 'error', 'message' => 'Error al seleccionar questions: ' . mysqli_error($conex)]);

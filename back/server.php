@@ -105,7 +105,16 @@ function handleGetRequest($route)
             $endDate = strtotime($_SESSION['end']);
             $diff = $endDate - $startDate;
 
-            $totalPoints = ($_SESSION['answersSuccess'] * 20) + $diff;
+            if ($diff >= 0 && $diff <= 9) {
+                $totalPoints = ($_SESSION['answersSuccess'] * 20) + 20;
+            } elseif ($diff >= 10 && $diff <= 19) {
+                $totalPoints = ($_SESSION['answersSuccess'] * 20) + 10;
+            } elseif ($diff >= 20 && $diff <= 29) {
+                $totalPoints = ($_SESSION['answersSuccess'] * 20) + 5;
+            } else {
+                $totalPoints = ($_SESSION['answersSuccess'] * 20);
+            }
+            
             $coins = ($_SESSION['answersSuccess'] * 5);
             setGame($_SESSION['user']['id'], $totalPoints, $coins, $_SESSION['numQuestions'], $_SESSION['answersSuccess'], $_SESSION['numQuestions'] - $_SESSION['answersSuccess'], $diff);
             setPoints($_SESSION['user']['id']);
@@ -116,6 +125,7 @@ function handleGetRequest($route)
                 "diff" => $diff,
                 'totalPoints' => $totalPoints,
                 'nQuestions'=>$_SESSION['numQuestions'],
+                'testResults'=>$_SESSION['resultsQuestions'],
                 'user' => $_SESSION['user']
             ]);
             break;
@@ -219,12 +229,23 @@ function handlePostRequest($route)
             $idRespostaCorrecta = $data['idsRespostes'];
 
             $preguntas = $_SESSION['preguntasWithoutCorrect'];
+            $_SESSION['resultsQuestions'] = [];
             // $_SESSION['answersSuccess'];
             foreach ($preguntas as $key => $pregunta) {
                 $verify = json_decode(verfiyAnswer($idRespostaCorrecta[$key], $pregunta['id']), true);
+                $aux = "incorrecta";
                 if ($verify['correcta'] == 1) {
                     $_SESSION['answersSuccess'] += 1;
+                    $aux = "correcta";
                 }
+
+                foreach($pregunta['respostes'] as $key => $resposta){
+                    if($resposta['id'] == $verify['id']) {
+                        $pregunta['verify'] = $aux;
+                    }
+                }
+
+                $_SESSION['resultsQuestions'][] = $pregunta;
             }
 
             // Devolver la respuesta en formato JSON
