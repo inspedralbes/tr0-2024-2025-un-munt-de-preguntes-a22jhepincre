@@ -22,6 +22,8 @@ let btnCloseModal;
 let modalElement;
 let exampleModal;
 let btnUpdateQuestion;
+let searchQuestion;
+let rowsQuestion;
 
 function init() {
     tableQuestionBody = document.querySelector('#tableQuestionBody');
@@ -35,6 +37,7 @@ function init() {
     modalElement = document.getElementById('exampleModal');
     exampleModal = new bootstrap.Modal(modalElement);
     btnUpdateQuestion = document.querySelector('#btnUpdateQuestion');
+    searchQuestion = document.querySelector('#searchQuestion');
 }
 
 let initBtnCloseModal = function () {
@@ -49,15 +52,27 @@ let initTable = function () {
     fetch('/tr0-2024-2025-un-munt-de-preguntes-a22jhepincre/back/server.php?route=preguntas')
         .then(response => response.json())
         .then(data => {
+            console.log(data)
             tableQuestionBody.innerHTML = ``;
             data.forEach(pregunta => {
+                let respostesHTML = `<div class="row">`;
+                pregunta.respostes.forEach((resposta,key)=>{
+                    respostesHTML += 
+                    `   
+                    <div class="col-lg-6 col-12">
+                        <label class="${resposta.correcta == 1 ? 'text-success':'text-danger'} fs-7">${resposta.correcta == 1 ? 'Correcta':'Incorrecta'}</label>
+                        <p class="m-0">${resposta.resposta}</p>
+                    </div>
+                    `;
+                });
+                respostesHTML += `</div>`
                 tableQuestionBody.innerHTML +=
                     `
-                <tr>
-                    <td>${pregunta.id}</td>
-                    <td>${pregunta.pregunta}</td>
+                <tr class="rowQuestion">
+                    <td class="idQuestion">${pregunta.id}</td>
+                    <td class="pregunta">${pregunta.pregunta}</td>
                     <td>${pregunta.imatge}</td>
-                    <td>RESPOSTA</td>
+                    <td>${respostesHTML}</td>
                     <td>
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-sm btn-secondary me-1 btnOpenModalUpdateQuestion"
@@ -75,6 +90,7 @@ let initTable = function () {
             });
             initBtnDeleteQuestion();
             initbtnOpenModalUpdateQuestion();
+            initSearchQuestion();
 
         })
 }
@@ -193,8 +209,8 @@ let initbtnOpenModalUpdateQuestion = function () {
     });
 }
 
-let initBtnUpdateQuestion = function(){
-    btnUpdateQuestion.addEventListener('click', function(){
+let initBtnUpdateQuestion = function () {
+    btnUpdateQuestion.addEventListener('click', function () {
         let pregunta = document.querySelector('#pregunta');
         let difficult = document.querySelector('#difficult');
         let imatge = document.querySelector('#imatgeURL');
@@ -204,11 +220,11 @@ let initBtnUpdateQuestion = function(){
 
         let answers = [];
 
-        respostasInput.forEach((resposta, key)=>{
+        respostasInput.forEach((resposta, key) => {
             let answer = {
                 "id": resposta.dataset.idResposta,
-                "resposta":resposta.value,
-                "correcta":checkRespostaCorrecta[key].checked
+                "resposta": resposta.value,
+                "correcta": checkRespostaCorrecta[key].checked
             }
 
             answers.push(answer);
@@ -221,12 +237,12 @@ let initBtnUpdateQuestion = function(){
             },
             body: JSON.stringify({
                 "question": {
-                    "id":idQuestionInput.value,
-                    "pregunta":pregunta.value,
+                    "id": idQuestionInput.value,
+                    "pregunta": pregunta.value,
                     "imatgeURL": imatge.value,
                     "dificultat": difficult.value
                 },
-                "answers":answers
+                "answers": answers
             })
         })
             .then(response => response.json())
@@ -237,7 +253,7 @@ let initBtnUpdateQuestion = function(){
                 initTable();
             })
             .catch(error => console.error('Error:', error));
-    });  
+    });
 }
 
 let initBtnOpenAddModalQuestion = function () {
@@ -278,6 +294,33 @@ function emptyForm() {
 
     checkRespostaCorrecta[0].checked = true;
 }
+
+let initSearchQuestion = function () {
+    searchQuestion.addEventListener('keyup', function () {
+        let search = this.value.toLowerCase();  // Convertimos a minúsculas para hacer una búsqueda insensible a mayúsculas/minúsculas
+        console.log(search);
+
+        rowsQuestion = document.querySelectorAll('.rowQuestion');
+
+        rowsQuestion.forEach((row) => {
+            let idQuestion = row.querySelector('.idQuestion').textContent.toLowerCase();
+            let pregunta = row.querySelector('.pregunta').textContent.toLowerCase();
+
+            if (search === '') {
+                row.classList.remove('d-none');
+                console.log("Mostrando todas");
+            } 
+            else if (idQuestion.includes(search) || pregunta.includes(search)) {
+                row.classList.remove('d-none');
+                console.log("Coincidencia encontrada");
+            } else {
+                row.classList.add('d-none');
+                console.log("Sin coincidencias");
+            }
+        });
+    });
+}
+
 
 document.querySelector('#app').addEventListener("questionsLoaded", function () {
     init();
