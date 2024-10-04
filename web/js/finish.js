@@ -37,6 +37,19 @@ let getResults = function(){
         let testResults = data['testResults'];
 
         testResults.forEach((test, key) => {
+            let res = ``;
+            test.respostes.forEach((resposta, key)=>{
+                res += 
+                `
+                    <div class="col-lg-6 col-12 mb-lg-4 mb-2">
+                        <button class="btn w-100 ms-10 me-10 ${test.verify == "correcta" ? 'btn-primary':'btn-danger'}">
+                            ${resposta.resposta}
+                        </button>
+                    </div>
+                    
+                `;
+            });
+
             btnCarouselIndicators.innerHTML += 
             `
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${key}" class="${key == 0 ? 'active':''} text-primary"
@@ -45,9 +58,16 @@ let getResults = function(){
 
             containerCarouselIndicators.innerHTML += 
             `
-            <div class="carousel-item w-100 h-100 ${key == 0 ? 'active':''}">
-                <div class="w-100 h-100">
-                    ${test.pregunta}
+            <div class="carousel-item w-100 ${key == 0 ? 'active':''}" style="min-height: 320px;">
+                <div class="carousel-caption">
+                  <div class="w-100 h-100 text-center">
+                        <p class="fs-4 fw-bold text-black">
+                            ${test.pregunta}
+                        </p>
+                    </div>
+                    <div class="row">
+                        ${res}
+                    </div>
                 </div>
             </div>
             `;

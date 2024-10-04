@@ -26,11 +26,40 @@
         background-color: #007bff !important;
         /* Azul primario sólido */
     }
+
+    /* Estilos generales */
+    .w-lg-50 {
+        width: 50%;
+    }
+
+    .w-sm-75 {
+        width: 75%;
+    }
+
+    @media (min-width: 992px) {
+        .w-lg-50 {
+            width: 50%;
+        }
+
+        .w-sm-75 {
+            width: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .w-sm-75 {
+            width: 75%;
+        }
+
+        .w-lg-50 {
+            width: auto;
+        }
+    }
 </style>
 
 <div class="center-screen">
     <p class="fw-bold text-white" style="font-size: 10vh;">Resultado</p>
-    <div class="card w-50">
+    <div class="card w-lg-50 w-sm-75">
         <div class="card-body">
             <!-- <img id="profilePicturePlayer"/> -->
             <div class="d-flex justify-content-center align-items-center">
@@ -56,19 +85,20 @@
             </div>
         </div>
     </div>
-    <div class="d-flex w-50 mt-lg-4">
+    <div class="w-lg-50 w-sm-75 d-flex mt-lg-4">
         <button class="btn btn-primary me-2" id="btnHome">Home</button>
         <button class="btn btn-primary" id="btnRetryGame">Tornar a jugar</button>
     </div>
 
-    <div class="w-50 mt-lg-4 mt-2">
-        <div class="card" style="min-height: 200px;">
+    <div class="w-75 mt-lg-4 mt-2">
+        <div class="card w-100" style="min-height: 200px;">
             <div class="card-body">
                 <label class="text-primary fs-6">Respuestas:</label>
-                <div id="carouselExampleIndicators" class="carousel slide" style="min-height: 200px;">
+                <div id="carouselExampleIndicators" class="carousel slide w-100" style="min-height: 200px;">
                     <div class="carousel-indicators" id="btnCarouselIndicators">
                     </div>
-                    <div class="carousel-inner" id="containerCarouselIndicators">
+                    <div class="carousel-inner" style="min-height: 200px;"
+                        id="containerCarouselIndicators">
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                         data-bs-slide="prev">
