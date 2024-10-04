@@ -4,6 +4,8 @@ let containerQuestion;
 let containerAnswers;
 let indice;
 let respostes;
+let multiplicador;
+
 function init() {
     containerQuestion = document.querySelector('#containerQuestion');
     containerAnswers = document.querySelector('#containerAnswers');
@@ -41,8 +43,8 @@ let cargarQuestion = function (indice) {
     
                 let containerProgressbar = document.querySelector('#containerProgressbar');
                 containerProgressbar.innerHTML = `
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="${indice * 10}" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar" style="width: ${indice * 10}%"></div>
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="${indice * multiplicador}" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" style="width: ${indice * multiplicador}%"></div>
                 </div>
                 `;
     
@@ -62,10 +64,12 @@ let initPregunta = function(){
     .then(response => response.json())
     .then(data => {
         console.log(data)
-        containerQuestion.textContent = data.pregunta;
+        multiplicador = 100/data.numQuestions;
+        console.log(multiplicador)
+        containerQuestion.textContent = data.pregunta.pregunta;
             containerAnswers.innerHTML = ``;
             let answersHtml = ``;
-            data.respostes.forEach(resposta => {
+            data.pregunta.respostes.forEach(resposta => {
                 answersHtml += `
                 <div class="col-lg-5 col-12 mb-lg-4 mb-2">
                 <button class="btn btn-primary btn-lg w-75 py-10 btnOpcion" data-option-id="${resposta.id}">${resposta.resposta}</button>
@@ -86,8 +90,8 @@ let initPregunta = function(){
 
             let containerProgressbar = document.querySelector('#containerProgressbar');
             containerProgressbar.innerHTML = `
-            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="${indice * 10}" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" style="width: ${indice * 10}%"></div>
+            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="${indice * multiplicador}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: ${indice * multiplicador}%"></div>
             </div>
             `;
 

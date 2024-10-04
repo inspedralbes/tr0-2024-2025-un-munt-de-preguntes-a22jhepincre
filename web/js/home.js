@@ -85,20 +85,20 @@ let initPodio = function(){
             if(key==0) icon = `<i class="bi bi-star-fill" style="color:#fff633"></i>`;
             else if(key==1) icon = `<i class="bi bi-star-fill" style="color:#c5c5c5"></i>`;
             else if(key==2) icon = `<i class="bi bi-star-fill" style="color:#CD8032"></i>`;
-            else icon = key;
+            else icon = key+1;
             html += `
-                        <div class="d-flex align-items-center justify-content-start mb-lg-4 mb-2">
-                            <div class="fw-bold fs-4 me-2">
+                        <div class="d-flex align-items-center justify-content-start ${key == 4 ? '':'mb-lg-4 mb-2'}">
+                            <div class="fw-bold e fs-custom-name me-2">
                                 ${icon}
                             </div>
-                            <div class="me-2" style="border-radius: 100px; width:40px; height: 40px; overflow: hidden;">
+                            <div class="me-2 img-profile-pic" style="border-radius: 100px;  overflow: hidden;">
                                 <img src="${user['profile_pic']}" alt="Profile Picture"
                                 style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
-                            <div class="fw-bold fs-4 me-2">
+                            <div class="fw-bold fs-custom-name me-2">
                                 ${user['name']}
                             </div>
-                            <div class="fw-bold fs-4 me-2">
+                            <div class="fw-bold fs-custom-name me-2">
                             ${user['total_score']}
                             </div>
                         </div>   

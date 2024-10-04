@@ -74,7 +74,7 @@ function handleGetRequest($route)
             $preguntas = $_SESSION['preguntasWithoutCorrect'];
             if (isset($preguntas[$id])) {
                 header('Content-Type: application/json');
-                echo json_encode($preguntas[$id]);
+                echo json_encode(['pregunta'=>$preguntas[$id], 'numQuestions'=>$_SESSION['numQuestions']]);
             } else {
                 http_response_code(404);
                 echo json_encode(["error" => "Pregunta no encontrada"]);
@@ -239,11 +239,15 @@ function handlePostRequest($route)
                     $aux = "correcta";
                 }
 
-                foreach($pregunta['respostes'] as $key => $resposta){
-                    if($resposta['id'] == $verify['id']) {
-                        $pregunta['verify'] = $aux;
-                    }
-                }
+                $pregunta['verify'] = $aux;
+                $pregunta['selected'] = $verify['id'];
+
+                // foreach($pregunta['respostes'] as $key => &$resposta){
+                //     if($resposta['id'] == $verify['id']) {
+                //         $resposta['verify'] = $aux;
+                //     }
+                // }
+                // unset($resposta);
 
                 $_SESSION['resultsQuestions'][] = $pregunta;
             }

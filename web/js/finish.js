@@ -39,26 +39,39 @@ let getResults = function(){
         testResults.forEach((test, key) => {
             let res = ``;
             test.respostes.forEach((resposta, key)=>{
-                res += 
-                `
-                    <div class="col-lg-6 col-12 mb-lg-4 mb-2">
-                        <button class="btn w-100 ms-10 me-10 ${test.verify == "correcta" ? 'btn-primary':'btn-danger'}">
-                            ${resposta.resposta}
-                        </button>
-                    </div>
-                    
-                `;
+                if(test.verify == "correcta"){
+                    res += 
+                    `
+                        <div class="col-lg-6 col-12 mb-lg-4 mb-2">
+                            <button class="btn w-100 ms-10 me-10 ${resposta.id == test.selected ? 'btn-success':'btn-primary'}">
+                                ${resposta.resposta}
+                            </button>
+                        </div>
+                        
+                    `;
+                }else{
+                    res += 
+                    `
+                        <div class="col-lg-6 col-12 mb-lg-4 mb-2">
+                            <button class="btn w-100 ms-10 me-10 ${resposta.id == test.selected ? 'btn-danger':'btn-primary'}">
+                                ${resposta.resposta}
+                            </button>
+                        </div>
+                        
+                    `;
+                }
+                
             });
 
             btnCarouselIndicators.innerHTML += 
             `
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${key}" class="${key == 0 ? 'active':''} text-primary"
-                     ${key == 0 ? 'aria-current="true"':''} aria-label="Slide ${key}"></button>
+                     ${key == 0 ? 'aria-current="true"':''} aria-label="Slide ${key}" style="${test.verify == "correcta" ? 'background-color:#198754':'background-color:#dc3545'}"></button>
             `;
 
             containerCarouselIndicators.innerHTML += 
             `
-            <div class="carousel-item w-100 ${key == 0 ? 'active':''}" style="min-height: 320px;">
+            <div class="carousel-item w-100 ${key == 0 ? 'active':''} containerCarousel" >
                 <div class="carousel-caption">
                   <div class="w-100 h-100 text-center">
                         <p class="fs-4 fw-bold text-black">
