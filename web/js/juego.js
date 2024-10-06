@@ -5,12 +5,19 @@ let containerAnswers;
 let indice;
 let respostes;
 let multiplicador;
+let btnDiscardOptions;
+let btnDiscardQuestion;
+let btnReloadAnotherQuestion;
 
 function init() {
     containerQuestion = document.querySelector('#containerQuestion');
     containerAnswers = document.querySelector('#containerAnswers');
     indice = 0;
     respostes = [];
+    btnDiscardOptions = document.querySelector('#btnDiscardOptions');
+    btnDiscardQuestion = document.querySelector('#btnDiscardQuestion');
+    btnReloadAnotherQuestion = document.querySelector('#btnReloadAnotherQuestion');
+
 }
 
 let cargarQuestion = function (indice) {
@@ -118,7 +125,28 @@ let pushResposta = function (resposta){
     respostes.push(resposta);
 }
 
+let initBtnDiscardOptions = function(){
+    btnDiscardOptions.addEventListener('click', function(){
+        console.log("discard options")
+    });
+}
+
+let initBtnDiscardQuestion = function(){
+    btnDiscardQuestion.addEventListener('click', function(){
+        console.log("discard question")
+    });
+}
+
+let initBtnReloadAnotherQuestion = function(){
+    btnReloadAnotherQuestion.addEventListener('click', function(){
+        console.log("reload question")
+    });
+}
+
 document.querySelector('#app').addEventListener("juegoLoaded", function () {
     init();
     initPregunta();
+    initBtnDiscardOptions();
+    initBtnDiscardQuestion();
+    initBtnReloadAnotherQuestion();
 });
