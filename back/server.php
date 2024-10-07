@@ -265,7 +265,7 @@ function handlePostRequest($route)
             }
             $question = json_decode(insertQuestion($data['pregunta'], $data['imatgeURL'], $data['dificultat']), true);
             $answers = json_decode(insertAnswers($question['idQuestion'], $data['answers']), true);
-            echo json_encode(["question" => $question, 'answers' => $answers]);
+            echo json_encode(["message"=>"Se añadio correctamente la pregunta","question" => $question, 'answers' => $answers]);
             break;
         case 'updateQuestion':
             $data = json_decode(file_get_contents('php://input'), true);
@@ -289,7 +289,7 @@ function handlePostRequest($route)
             $resultDeleteAnswers = json_decode(deleteAnswers($data['idQuestion']), true);
 
             $result = json_decode(deleteQuestion($data['idQuestion']), true);
-            echo json_encode(["preguntas" => $result, "respuesotas" => $resultDeleteAnswers]);
+            echo json_encode(["message"=>"Se elimino correctamente la pregunta","preguntas" => $result, "respuesotas" => $resultDeleteAnswers]);
             break;
         case 'setConfig':
             $data = json_decode(file_get_contents('php://input'), true);
