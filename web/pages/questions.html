@@ -1,0 +1,190 @@
+<style>
+    .center-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    body {
+        background-color: #71CBF0;
+    }
+</style>
+
+<div class="center-screen w-100 text-center p-4">
+    <div class="w-75">
+        <div class="text-start">
+            <button class="btn btn-primary mt-3" id="btnHome">Home</button>
+        </div>
+        <div class="text-start py-4">
+            <p class="fs-1 fw-bold text-white">Preguntas</p>
+        </div>
+
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="input-group mb-3 w-25">
+                        <input type="text" id="searchQuestion" class="form-control" placeholder="Buscar..." aria-label="Buscar"
+                            aria-describedby="basic-addon1">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btnOpenAddModalQuestion">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                            </svg>
+                        </span>
+                        <span>Pregunta</span>
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Pregunta</th>
+                                <th scope="col">Imatge</th>
+                                <th scope="col">Respostas</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableQuestionBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="labelModal">Añadir pregunta</h1>
+                    <button type="button" class="btn-close" id="btnCloseModal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <form>
+                        <input id="idQuestion" hidden/>
+                        <div class="mb-2 d-flex justify-content-between">
+                            <div class="w-50 me-2">
+                                <label for="pregunta" class="form-label">Pregunta</label>
+                                <input type="text" class="form-control" id="pregunta" name="pregunta"
+                                    aria-describedby="preguntaHelp">
+                                <div class="form-text">Una pregunta que tenga que ver con marcas.
+                                </div>
+                            </div>
+                            <div class="w-50">
+                                <label for="pregunta" class="form-label">Dificultat</label>
+                                <select class="form-select" name="difficult" id="difficult">
+                                    <option value="easy">Fácil</option>
+                                    <option value="medium">Medio</option>
+                                    <option value="height">Dificil</option>
+                                </select>
+                                <div class="form-text">Escoge que dificultat tiene la pregunta
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="row">
+                                <div class="col-lg-7 col-12 d-flex align-items-end">
+                                    <div class="w-100">
+                                        <label for="imatge" class="form-label">Imatge URL</label>
+                                        <input type="text" class="form-control" id="imatgeURL" name="imgURL"
+                                            aria-describedby="imatgeHelp">
+                                        <div class="form-text">Una imatge para dar una pista de la
+                                            correcta.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-12">
+                                    <div class=""
+                                        style="border:1px solid; color:rgb(33 37 41 / 75%);height: 150px;width: 100%; overflow: hidden;"
+                                        id="containerImg">
+                                        <div id="exImatge"
+                                            class="form-text m-0 d-flex justify-content-center align-items-center h-100">
+                                            Aqui se vera la imagen que pongas.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="row">
+                                <div class="col-lg-12 col-12">
+                                    <label for="respostes" class="form-label">Respostes</label>
+                                    <div id="containeRespostes" class="d-grid gap-2">
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2 checkRespostaCorrecta"
+                                                name="check-corecta" style="width: 2%;" type="radio" checked />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text" class="resposta" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2 checkRespostaCorrecta"
+                                                name="check-corecta" style="width: 2%;" type="radio" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text" class="resposta" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2 checkRespostaCorrecta"
+                                                name="check-corecta" style="width: 2%;" type="radio" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text" class="resposta" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center w-100">
+                                            <input class="form-check-input me-2 checkRespostaCorrecta"
+                                                name="check-corecta" style="width: 2%;" type="radio" />
+                                            <div class="card" style="width: 98%;">
+                                                <div class="card-body p-2">
+                                                    <input name="resposta" type="text" class="resposta" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="mt-2">
+                                        <button class="btn btn-sm btn-primary" id="btnAddAnswer">Añadir respuesta</button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btnAddQuestion">Añadir pregunta</button>
+                        <button type="button" class="btn btn-primary" id="btnUpdateQuestion">Actualizar pregunta</button>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body bg-opacity-75 text-white rounded-2" id="toastType">
+                <div class="d-flex justify-content-center align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill fs-5 me-2" id="toastIcon"></i>
+                    <p class="m-0" id="toastMsg"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
